@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Labb_03_version_02_Quiz_with_GUI.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,15 +34,42 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+
+
+        public DelegateCommand UpdateButtonCommand { get; }
+
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
 
+            TestData = "Start valuee: ";
+
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
-            timer.Start();
+            // timer.Start();
+
+            //UpdateButtonCommand = new DelegateCommand(UpdateButton);
+            UpdateButtonCommand = new DelegateCommand(UpdateButton, CanUpdateButton);
+            /* Man kan alltså skapa flera DelegateCommand. Senare kommer jag behöva skapa 
+            AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
+            med tillhörande två funktioner AddQuestion och CanAddQuestion
+            */
         }
+
+        private bool CanUpdateButton(object? arg)
+        {
+            return TestData.Length < 20;
+        }
+
+        private void UpdateButton(object obj)
+        {
+            TestData += 'x';
+            UpdateButtonCommand.RaiseCanExecuteChanged();
+        }
+
+
 
         private void Timer_Tick(object? sender, EventArgs e)
         {

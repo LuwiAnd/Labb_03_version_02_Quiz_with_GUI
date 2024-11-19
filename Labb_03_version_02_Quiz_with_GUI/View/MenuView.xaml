@@ -22,6 +22,11 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Add Question" />
                 <MenuItem Header="_Remove Question" />
+                <MenuItem Header="Update Button"
+                          InputGestureText="Ctrl + U"
+                          Command="{Binding Path=PlayerViewModel.UpdateButtonCommand}"
+                          />
+                <!-- Lektion 116: InputGestureText="Ctrl + U" -->
             </MenuItem>
         </Menu>
             
