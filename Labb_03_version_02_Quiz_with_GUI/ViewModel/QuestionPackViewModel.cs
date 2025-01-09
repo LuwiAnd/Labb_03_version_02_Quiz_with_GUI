@@ -18,6 +18,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         {
             this.model = model;
             this.Questions = new ObservableCollection<Question>(model.Questions);
+            this.SelectedQuestion = this.Questions.FirstOrDefault();
         }
 
         public string Name {
@@ -49,6 +50,6 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         }
         public ObservableCollection<Question> Questions { get; }
 
-        
+        public Question? SelectedQuestion;
     }
 }
