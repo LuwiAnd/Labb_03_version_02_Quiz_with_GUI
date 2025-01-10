@@ -28,6 +28,16 @@
                           />
                 <!-- Lektion 116: InputGestureText="Ctrl + U" -->
             </MenuItem>
+
+            <MenuItem Header="_View">
+                <MenuItem Header="Play"
+                          Command="{Binding SwitchToPlayerViewCommand}"
+                          />
+                <MenuItem Header="Edit"
+                          Command="{Binding SwitchToConfigurationViewCommand}"
+                          />
+                <MenuItem Header="Fullscreen"/>
+            </MenuItem>
         </Menu>
             
     </Grid>

@@ -1,4 +1,5 @@
-﻿using Labb_03_version_02_Quiz_with_GUI.Model;
+﻿using Labb_03_version_02_Quiz_with_GUI.Command;
+using Labb_03_version_02_Quiz_with_GUI.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,29 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public ConfigurationViewModel ConfigurationViewModel{ get; }
 
         public PlayerViewModel PlayerViewModel{ get; }
+
+        private object _currentView;
+
+        public object CurrentView
+        {
+            get { return _currentView; }
+            set {
+                _currentView = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Lektion 112. Frågetecknet talar om för kompilatorn att vi är medvetna om att variabeln kan vara null.
         private QuestionPackViewModel? _activePack;
@@ -90,6 +114,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         }
 
 
+
+
+        public DelegateCommand SwitchToConfigurationViewCommand { get; }
+        public DelegateCommand SwitchToPlayerViewCommand { get; }
+
+
+
+
         public MainWindowViewModel()
         {
             ConfigurationViewModel = new ConfigurationViewModel(this);
@@ -107,6 +139,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             ));
 
             SelectedQuestion = ActivePack.Questions.FirstOrDefault();
+
+            CurrentView = ConfigurationViewModel;
+
+            SwitchToConfigurationViewCommand = new DelegateCommand(_ => CurrentView = ConfigurationViewModel, _ => CurrentView != ConfigurationViewModel);
+            SwitchToPlayerViewCommand = new DelegateCommand(_ => CurrentView = PlayerViewModel, _ => CurrentView != PlayerViewModel);
         }
     }
 }

@@ -11,6 +11,20 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
     internal class ConfigurationViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
+        public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
+
+        public Question? SelectedQuestion { 
+            get => mainWindowViewModel.SelectedQuestion;
+            set => mainWindowViewModel.SelectedQuestion = value;
+        }
+
+        public bool HasSelectedQuestion
+        {
+            get => mainWindowViewModel.HasSelectedQuestion;
+            set => mainWindowViewModel.HasSelectedQuestion = value;
+        }
+
+
 
         public DelegateCommand RemoveQuestionCommand { get; }
         public DelegateCommand AddQuestionCommand { get; }
@@ -24,19 +38,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
         }
 
-        public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
         
-        public Question? SelectedQuestion { 
-            get => mainWindowViewModel.SelectedQuestion;
-            set => mainWindowViewModel.SelectedQuestion = value;
-        }
-
-        public bool HasSelectedQuestion
-        {
-            get => mainWindowViewModel.HasSelectedQuestion;
-            set => mainWindowViewModel.HasSelectedQuestion = value;
-        }
+        
 
 
         // Funktioner till DelegateCommand ---------------------------

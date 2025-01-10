@@ -23,9 +23,6 @@ namespace Labb_03_version_02_Quiz_with_GUI
             InitializeComponent();
             // Lektion 112. När vi sätter denna DataContext, så gör det att vi kan bind:a mot Packs och ActivePack.
             DataContext = new MainWindowViewModel();
-
-            
-
         }
     }
 }
