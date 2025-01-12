@@ -24,6 +24,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             set => mainWindowViewModel.HasSelectedQuestion = value;
         }
 
+        public bool ShowConfigurationView
+        {
+            get => mainWindowViewModel.ShowConfigurationView;
+        }
+
 
 
         public DelegateCommand RemoveQuestionCommand { get; }

@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
+        <!--<BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />-->
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </Window.Resources>
     <Window.InputBindings>
@@ -19,22 +20,32 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
-        <view:MenuView Grid.Row="0" />
+        <view:MenuView Grid.Row="0" DataContext="{Binding}"/>
 
-        <!--<view:PlayerView Grid.Row="1" />-->
-        <!--<view:ConfigurationView Grid.Row="1" />-->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentView}">
+        <!--<view:playerview grid.row="1" />
+        <view:configurationview grid.row="1" />-->
+
+        <view:ConfigurationView Grid.Row="1" Visibility="{Binding Path=ShowConfigurationView, Converter={StaticResource boolToVisibilityConverter}}"/>
+        <view:PlayerView        Grid.Row="1" Visibility="{Binding Path=ShowPlayerView,        Converter={StaticResource boolToVisibilityConverter}}"/>
+
+
+        <!--<ContentControl Grid.Row="1" Content="{Binding CurrentView}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodel:PlayerViewModel}">
-                    <view:PlayerView/>
+                    <view:PlayerView DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodel:ConfigurationViewModel}">
-                    <view:ConfigurationView/>
+                    --><!--<view:ConfigurationView/>--><!--
+                    <view:ConfigurationView DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"/>
                 </DataTemplate>
             </ContentControl.Resources>
-        </ContentControl>
-        
+        </ContentControl>-->
+        <StackPanel Grid.Row="2" Orientation="Vertical" Background="LightBlue">
+            <TextBlock Text="{Binding ShowConfigurationView}"/>
+            <TextBlock Text="{Binding ShowPlayerView}"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -31,10 +31,10 @@
 
             <MenuItem Header="_View">
                 <MenuItem Header="Play"
-                          Command="{Binding SwitchToPlayerViewCommand}"
+                          Command="{Binding Path=SwitchToPlayerViewCommand}"
                           />
                 <MenuItem Header="Edit"
-                          Command="{Binding SwitchToConfigurationViewCommand}"
+                          Command="{Binding Path=SwitchToConfigurationViewCommand}"
                           />
                 <MenuItem Header="Fullscreen"/>
             </MenuItem>

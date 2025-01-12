@@ -3,6 +3,7 @@ using Labb_03_version_02_Quiz_with_GUI.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public PlayerViewModel PlayerViewModel{ get; }
 
-        private object _currentView;
 
+        /* Lösningen med CurrentView och ContentControl gör så att bindings slutar att fungera, så 
+         * jag testar en enklare lösning tillsvidare.
+        private object _currentView;
         public object CurrentView
         {
             get { return _currentView; }
@@ -27,7 +30,43 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 RaisePropertyChanged();
             }
         }
+        */
 
+        private bool _showConfigurationView;
+        public bool ShowConfigurationView
+        {
+            get { return _showConfigurationView; }
+            set {
+                Debug.Write($"Nu har _showConfigurationView värdet {_showConfigurationView} som uppdateras till ");
+                _showConfigurationView = value;
+                Debug.WriteLine(_showConfigurationView);
+                if (value)
+                {
+                    ShowPlayerView = false;
+                }
+                RaisePropertyChanged(); // Ingenting bindar till den här, men jag har kvar denna kodrad för att slippa felsökning om den behövs senare.
+                ConfigurationViewModel.RaisePropertyChanged();
+                SwitchToConfigurationViewCommand.RaiseCanExecuteChanged();
+                SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private bool _showPlayerView;
+        public bool ShowPlayerView
+        {
+            get { return _showPlayerView; }
+            set { 
+                _showPlayerView = value;
+                if (value)
+                {
+                    ShowConfigurationView = false;
+                }
+                //RaisePropertyChanged();
+                PlayerViewModel.RaisePropertyChanged();
+                SwitchToConfigurationViewCommand.RaiseCanExecuteChanged();
+                SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+            }
+        }
 
 
 
@@ -140,10 +179,22 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             SelectedQuestion = ActivePack.Questions.FirstOrDefault();
 
-            CurrentView = ConfigurationViewModel;
+            
 
-            SwitchToConfigurationViewCommand = new DelegateCommand(_ => CurrentView = ConfigurationViewModel, _ => CurrentView != ConfigurationViewModel);
-            SwitchToPlayerViewCommand = new DelegateCommand(_ => CurrentView = PlayerViewModel, _ => CurrentView != PlayerViewModel);
+            //SwitchToConfigurationViewCommand = new DelegateCommand(_ => CurrentView = ConfigurationViewModel, _ => CurrentView != ConfigurationViewModel);
+            //SwitchToPlayerViewCommand = new DelegateCommand(_ => CurrentView = PlayerViewModel, _ => CurrentView != PlayerViewModel);
+            SwitchToConfigurationViewCommand = new DelegateCommand(
+                _ => { ShowConfigurationView = true; ShowPlayerView = false; },
+                _ => !ShowConfigurationView
+            );
+            SwitchToPlayerViewCommand = new DelegateCommand(
+                _ => { ShowConfigurationView = false; ShowPlayerView = true; },
+                _ => !ShowPlayerView
+            );
+
+            //CurrentView = ConfigurationViewModel;
+            ShowConfigurationView =  true;
+            ShowPlayerView =  false;
         }
     }
 }
