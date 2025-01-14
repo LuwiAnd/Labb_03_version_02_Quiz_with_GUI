@@ -61,7 +61,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             if (ActivePack != null && SelectedQuestion != null)
             {
                 ActivePack.Questions.Remove(SelectedQuestion);
-                //SelectedQuestion = null;
+
+                mainWindowViewModel.PlayerViewModel.StartQuizCommand.RaiseCanExecuteChanged();
+                mainWindowViewModel.SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -88,8 +90,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                         incorrectAnswer3: "Type a third incorrect answer here"
                     )
                 );
-                        
-                //SelectedQuestion = null;
+
+                mainWindowViewModel?.PlayerViewModel.StartQuizCommand.RaiseCanExecuteChanged();
+                mainWindowViewModel?.SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
             }
         }
 

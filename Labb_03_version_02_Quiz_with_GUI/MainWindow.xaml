@@ -20,7 +20,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
         <view:MenuView Grid.Row="0" DataContext="{Binding}"/>
@@ -43,9 +42,12 @@
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>-->
-        <StackPanel Grid.Row="2" Orientation="Vertical" Background="LightBlue">
+        
+        
+        <!-- Detta är för testning-->
+        <!--<StackPanel Grid.Row="2" Orientation="Vertical" Background="LightBlue">
             <TextBlock Text="{Binding ShowConfigurationView}"/>
             <TextBlock Text="{Binding ShowPlayerView}"/>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Window>

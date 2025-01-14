@@ -8,12 +8,56 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Button Grid.Row="1"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1" 
+                        Grid.Column="1"
+                        VerticalAlignment="Stretch"
+                        >
+
+                <Label FontSize="40"
+                   FontWeight="DemiBold"
+                   HorizontalAlignment="Center"
+                   Content="{Binding CurrentQuestion.Query}"
+                   />
+
+
+
+                <Label FontSize="20"
+                    FontWeight="DemiBold"
+                    HorizontalAlignment="Center"
+                    Content="{Binding ProgressionString}"
+                    />
+            </StackPanel>
+
+            <Label Grid.Row="0"
+                   Grid.Column="2"
+                   Content="{Binding SecondsRemainingToAnswer}"
+                   />
+        </Grid>
+        
+        
+        <!--<Button Grid.Row="1"
         VerticalAlignment="Center"
         HorizontalAlignment="Center"
         Content="{Binding Path=TestData}"
         Margin="10"
         Command="{Binding UpdateButtonCommand}"
-        />
+        />-->
     </Grid>
 </UserControl>

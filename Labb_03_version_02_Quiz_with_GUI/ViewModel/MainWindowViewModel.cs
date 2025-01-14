@@ -40,6 +40,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 Debug.Write($"Nu har _showConfigurationView värdet {_showConfigurationView} som uppdateras till ");
                 _showConfigurationView = value;
                 Debug.WriteLine(_showConfigurationView);
+                if(!_showConfigurationView && value)
+                {
+                    PlayerViewModel.timer.Stop();
+                    // Detta gör jag för att spelaren inte ska få mer eller mindre tid om han
+                    // eller hon startar ett nytt Quiz, för annars kommer timer ihåg hur lång
+                    // tid som hade gått av intervallet och startar därifrån.
+                    PlayerViewModel.timer.Interval = TimeSpan.FromSeconds(1); 
+                }
                 if (value)
                 {
                     ShowPlayerView = false;
@@ -56,6 +64,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         {
             get { return _showPlayerView; }
             set { 
+                if(!_showPlayerView && value)
+                {
+                    PlayerViewModel.timer.Start();
+                }
                 _showPlayerView = value;
                 if (value)
                 {
@@ -158,13 +170,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public DelegateCommand SwitchToConfigurationViewCommand { get; }
         public DelegateCommand SwitchToPlayerViewCommand { get; }
 
-
+        public DelegateCommand StartQuiz { get; }
 
 
         public MainWindowViewModel()
         {
             ConfigurationViewModel = new ConfigurationViewModel(this);
-            PlayerViewModel = new PlayerViewModel(this);
             // Lektion 112. 26 minuter.
             ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
 
@@ -177,8 +188,20 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 incorrectAnswer3: "inkorr3kt"
             ));
 
+            /*
+            ActivePack.Questions.Add(new Question(
+                query: "Andra frågan?",
+                correctAnswer: "Ja, korrekt svar",
+                incorrectAnswer1: "Nej, inkorr1",
+                incorrectAnswer2: "Nej, inkorr2",
+                incorrectAnswer3: "Nej, inkorr3kt"
+            ));
+            */
+
             SelectedQuestion = ActivePack.Questions.FirstOrDefault();
 
+            
+            PlayerViewModel = new PlayerViewModel(this);
             
 
             //SwitchToConfigurationViewCommand = new DelegateCommand(_ => CurrentView = ConfigurationViewModel, _ => CurrentView != ConfigurationViewModel);
@@ -188,8 +211,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 _ => !ShowConfigurationView
             );
             SwitchToPlayerViewCommand = new DelegateCommand(
-                _ => { ShowConfigurationView = false; ShowPlayerView = true; },
-                _ => !ShowPlayerView
+                _ => { ShowConfigurationView = false; ShowPlayerView = true; PlayerViewModel.StartQuizCommand.Execute(null); },
+                _ => !ShowPlayerView && ActivePack.Questions.Count > 0
             );
 
             //CurrentView = ConfigurationViewModel;
