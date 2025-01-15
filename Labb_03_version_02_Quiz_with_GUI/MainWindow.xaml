@@ -29,6 +29,7 @@
 
         <view:ConfigurationView Grid.Row="1" Visibility="{Binding Path=ShowConfigurationView, Converter={StaticResource boolToVisibilityConverter}}"/>
         <view:PlayerView        Grid.Row="1" Visibility="{Binding Path=ShowPlayerView,        Converter={StaticResource boolToVisibilityConverter}}"/>
+        <view:QuizCompletedView Grid.Row="1" Visibility="{Binding Path=ShowQuizCompletedView, Converter={StaticResource boolToVisibilityConverter}}"/>
 
 
         <!--<ContentControl Grid.Row="1" Content="{Binding CurrentView}">

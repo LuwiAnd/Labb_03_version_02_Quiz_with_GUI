@@ -18,6 +18,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public PlayerViewModel PlayerViewModel{ get; }
 
+        public QuizCompletedViewModel QuizCompletedViewModel { get; }
+
 
         /* Lösningen med CurrentView och ContentControl gör så att bindings slutar att fungera, så 
          * jag testar en enklare lösning tillsvidare.
@@ -51,6 +53,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 if (value)
                 {
                     ShowPlayerView = false;
+                    ShowQuizCompletedView = false;
                 }
                 RaisePropertyChanged(); // Ingenting bindar till den här, men jag har kvar denna kodrad för att slippa felsökning om den behövs senare.
                 ConfigurationViewModel.RaisePropertyChanged();
@@ -72,6 +75,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 if (value)
                 {
                     ShowConfigurationView = false;
+                    ShowQuizCompletedView = false;
                 }
                 //RaisePropertyChanged();
                 PlayerViewModel.RaisePropertyChanged();
@@ -79,6 +83,26 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
             }
         }
+
+        private bool _showQuizCompletedView;
+        public bool ShowQuizCompletedView
+        {
+            get { return _showQuizCompletedView; }
+            set
+            {
+                _showQuizCompletedView = value;
+                if (value)
+                {
+                    ShowConfigurationView = false;
+                    ShowPlayerView = false;
+                }
+                //RaisePropertyChanged();
+                QuizCompletedViewModel.RaisePropertyChanged();
+                //SwitchToConfigurationViewCommand.RaiseCanExecuteChanged();
+                //SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+            }
+        }
+
 
 
 
@@ -141,8 +165,6 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 {
                     _selectedQuestion = value;
                     RaisePropertyChanged();
-
-                    
                 }
 
                 HasSelectedQuestion = _selectedQuestion != null;
@@ -202,22 +224,37 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             
             PlayerViewModel = new PlayerViewModel(this);
-            
+
+            QuizCompletedViewModel = new QuizCompletedViewModel(this);
+
 
             //SwitchToConfigurationViewCommand = new DelegateCommand(_ => CurrentView = ConfigurationViewModel, _ => CurrentView != ConfigurationViewModel);
             //SwitchToPlayerViewCommand = new DelegateCommand(_ => CurrentView = PlayerViewModel, _ => CurrentView != PlayerViewModel);
             SwitchToConfigurationViewCommand = new DelegateCommand(
-                _ => { ShowConfigurationView = true; ShowPlayerView = false; },
+                //_ => { ShowConfigurationView = true; ShowPlayerView = false; },
+                _ => { ShowConfigurationView = true; },
                 _ => !ShowConfigurationView
             );
             SwitchToPlayerViewCommand = new DelegateCommand(
-                _ => { ShowConfigurationView = false; ShowPlayerView = true; PlayerViewModel.StartQuizCommand.Execute(null); },
+                //_ => { ShowConfigurationView = false; ShowPlayerView = true; PlayerViewModel.StartQuizCommand.Execute(null); },
+                _ => { ShowPlayerView = true; PlayerViewModel.StartQuizCommand.Execute(null); },
                 _ => !ShowPlayerView && ActivePack.Questions.Count > 0
             );
 
             //CurrentView = ConfigurationViewModel;
             ShowConfigurationView =  true;
             ShowPlayerView =  false;
+            ShowQuizCompletedView =  false;
         }
+
+        /*
+        private void ChangeView(string view)
+        {
+            if(view == "config")
+            {
+                ShowConfigurationView = true;
+            }
+        }
+        */
     }
 }

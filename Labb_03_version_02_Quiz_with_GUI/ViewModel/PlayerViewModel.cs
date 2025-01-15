@@ -16,6 +16,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
+            //this.quizCompletedViewModel = new QuizCompletedViewModel(this);
+
             CurrentQuestionIndex = 0;
             SecondsRemainingToAnswer = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             StartQuizCommand = new DelegateCommand(execute: StartQuiz, canExecute: CanStartQuiz);
@@ -34,6 +36,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
         private readonly MainWindowViewModel? mainWindowViewModel;
+        private QuizCompletedViewModel quizCompletedViewModel;
 
         public DelegateCommand StartQuizCommand { get; }
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
@@ -88,6 +91,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             {
                 _progressionString = value;
                 RaisePropertyChanged();
+                mainWindowViewModel.QuizCompletedViewModel.RaisePropertyChanged();
             }
         }
 
@@ -121,6 +125,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             get => mainWindowViewModel.ShowPlayerView;
         }
 
+        public bool ShowQuizCompletedView
+        {
+            get => mainWindowViewModel.ShowQuizCompletedView;
+        }
+
 
         public DelegateCommand UpdateButtonCommand { get; }
 
@@ -145,6 +154,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         private void StartQuiz(object obj)
         {
+            if (!mainWindowViewModel.ShowPlayerView) { mainWindowViewModel.ShowPlayerView = true; }
             CurrentQuestionIndex = 0;
             CurrentScore = 0;
 
@@ -175,7 +185,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             }
             else
             {
-
+                mainWindowViewModel.ShowQuizCompletedView = true;
             }
         }
     }
