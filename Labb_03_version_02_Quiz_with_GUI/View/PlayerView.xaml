@@ -75,29 +75,43 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="buttonLeftTop"
-                    Content="Svar 1"
+            <Button x:Name="buttonAnswer1"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Margin="15"
+                    Margin="30 30 5 5"
+                    Content="{Binding AnswerOptions[0].AnswerText}"
+                    Background="{Binding AnswerOptions[0].BackgroundColor}"
+                    Command="{Binding AnswerCommand}"
+                    CommandParameter="{Binding AnswerOptions[0]}"
                     />
-            <Button x:Name="buttonRightTop"
-                Content="Svarsalternativ 2"
+                    <!--Content="{Binding AnswerOptions[0].AnswerText}"-->
+            <Button x:Name="buttonAnswer2"
                 Grid.Row="0"
                 Grid.Column="1"
-                Margin="15"
+                Margin="5 30 30 5"
+                Content="{Binding AnswerOptions[1].AnswerText}"
+                Background="{Binding AnswerOptions[1].BackgroundColor}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[1]}"
                 />
-            <Button x:Name="buttonLeftBottom"
-                Content="Svarasdadg 3"
+                    <!--Background="#FF00FF"-->
+            <Button x:Name="buttonAnswer3"
                 Grid.Row="1"
                 Grid.Column="0"
-                Margin="15"
+                Margin="30 5 5 30"
+                Content="{Binding AnswerOptions[2].AnswerText}"
+                Background="{Binding AnswerOptions[2].BackgroundColor}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[2]}"
                 />
-            <Button x:Name="buttonRightBottom"
-                Content="Svarsalternativ 4"
+            <Button x:Name="buttonAnswer4"
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="15"
+                Margin="5 5 30 30"
+                Content="{Binding AnswerOptions[3].AnswerText}"
+                Background="{Binding AnswerOptions[3].BackgroundColor}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOptions[3]}"
                 />
 
         </Grid>
