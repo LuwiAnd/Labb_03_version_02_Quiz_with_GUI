@@ -16,11 +16,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel 
-            Grid.Column="0"
-        >
-            <StackPanel.Style>
-                <Style TargetType="StackPanel">
+        <Grid Grid.Column="0">
+            <Grid.Style>
+                <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible" />
                     <Style.Triggers>
                         <!--<DataTrigger Binding="{Binding ActivePack}" Value="{x:Null}">
@@ -37,8 +35,14 @@
                         
                     </Style.Triggers>
                 </Style>
-            </StackPanel.Style>
-            <Grid>
+            </Grid.Style>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
@@ -85,11 +89,13 @@
                      />-->
 
             <ListBox x:Name="QuestionsListBox"
-                     Margin="10, 0, 10, 0"
+                     Grid.Row="1"
+                     Margin="10, 0, 10, 10"
                      ItemsSource="{Binding ActivePack.Questions}"
-                     SelectionMode="Extended"
+                     SelectionMode="Multiple"
                      SelectedItem="{Binding SelectedQuestion, Mode=TwoWay}"
                      >
+                     <!--SelectionMode="Extended"-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -105,7 +111,7 @@
                 <ListBoxItem Content="sak 2" />
                 <ListBoxItem Content="sak 3" />
             </ListBox>-->
-        </StackPanel>
+        </Grid>
             
 
         <StackPanel 

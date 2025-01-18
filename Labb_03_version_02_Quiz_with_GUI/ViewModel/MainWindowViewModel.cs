@@ -42,9 +42,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 Debug.Write($"Nu har _showConfigurationView värdet {_showConfigurationView} som uppdateras till ");
                 _showConfigurationView = value;
                 Debug.WriteLine(_showConfigurationView);
-                if(!_showConfigurationView && value)
+
+                // Oavsett om jag växlar till eller från configurationsvyn, så vill jag stanna tiden.
+                PlayerViewModel.timer.Stop();
+                if (!_showConfigurationView && value)
                 {
-                    PlayerViewModel.timer.Stop();
+                    // Oavsett om jag växlar till eller från configuration, så vill jag stanna tiden.
+                    //PlayerViewModel.timer.Stop(); 
+
                     // Detta gör jag för att spelaren inte ska få mer eller mindre tid om han
                     // eller hon startar ett nytt Quiz, för annars kommer timer ihåg hur lång
                     // tid som hade gått av intervallet och startar därifrån.
@@ -76,6 +81,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 {
                     ShowConfigurationView = false;
                     ShowQuizCompletedView = false;
+                    PlayerViewModel.timer.Start();
                 }
                 //RaisePropertyChanged();
                 PlayerViewModel.RaisePropertyChanged();

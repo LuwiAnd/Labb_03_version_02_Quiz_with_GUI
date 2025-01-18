@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using System.Security.AccessControl;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
@@ -23,7 +24,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             this.mainWindowViewModel = mainWindowViewModel;
             //this.quizCompletedViewModel = new QuizCompletedViewModel(this);
 
-            CurrentQuestionIndex = 0;
+            //CurrentQuestionIndex = 0;
             SecondsRemainingToAnswer = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             StartQuizCommand = new DelegateCommand(execute: StartQuiz, canExecute: CanStartQuiz);
 
@@ -40,9 +41,51 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             AnswerCommand = new DelegateCommand(OnScoringQuestion);
             QuizState QuizState = QuizState.Asking;
-            AnswerOptions = new ObservableCollection<AnswerOption>();
+            AnswerOptions = new ObservableCollection<AnswerOption> { 
+                new AnswerOption("", false), 
+                new AnswerOption("", false), 
+                new AnswerOption("", false), 
+                new AnswerOption("", false)
+            };
+
+            AnswerOption1 = new AnswerOption("", false);
+            AnswerOption2 = new AnswerOption("", false);
+            AnswerOption3 = new AnswerOption("", false);
+            AnswerOption4 = new AnswerOption("", false);
+
             LoadAnswerOptions();
         }
+
+        private AnswerOption _answerOption1;
+        private AnswerOption _answerOption2;
+        private AnswerOption _answerOption3;
+        private AnswerOption _answerOption4;
+        public AnswerOption AnswerOption1
+        {
+            get => _answerOption1;
+            set { _answerOption1 = value; RaisePropertyChanged(); }
+        }
+
+        public AnswerOption AnswerOption2
+        {
+            get => _answerOption2;
+            set { _answerOption2 = value; RaisePropertyChanged(); }
+        }
+
+        public AnswerOption AnswerOption3
+        {
+            get => _answerOption3;
+            set { _answerOption3 = value; RaisePropertyChanged(); }
+        }
+
+        public AnswerOption AnswerOption4
+        {
+            get => _answerOption4;
+            set { _answerOption4 = value; RaisePropertyChanged(); }
+        }
+
+
+
 
         private readonly MainWindowViewModel? mainWindowViewModel;
         private QuizCompletedViewModel quizCompletedViewModel;
@@ -52,8 +95,17 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public DelegateCommand StartQuizCommand { get; }
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
-        
-        public int CurrentScore { get; set; }
+
+        private int _currentScore;
+        public int CurrentScore {
+            get => _currentScore;
+            set
+            {
+                _currentScore = value;
+                //RaisePropertyChanged();
+                UpdateProgressionString();
+            }
+        }
 
         private int _secondsRemainingToDisplayCorrectAnswer;
         public int SecondsRemainingToDisplayCorrectAnswer {
@@ -83,6 +135,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             set
             {
                 _currentQuestionIndex = value;
+
+                LoadAnswerOptions();
+                UpdateProgressionString();
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(CurrentQuestion));
             }
@@ -95,6 +150,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         //public string ProgressionString { get => $"Question  {CurrentQuestionIndex + 1}  of  {ActivePack?.Questions.Count}"; }
         //public string ProgressionString { get; set; }
         private string _progressionString = "Hejsan";
+        //private string _progressionString = UpdateProgressionString();
         public string ProgressionString
         {
             get => _progressionString;
@@ -106,7 +162,35 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             }
         }
 
+        private void UpdateProgressionString()
+        {
+            string questionNumberString;
+            string questionScoreString;
 
+            int questionNumber = CurrentQuestionIndex + 1;
+            int? totalQuestionNumber = mainWindowViewModel?.ActivePack?.Questions.Count;
+
+            int? questionsAnswered;
+
+            if (mainWindowViewModel.ShowQuizCompletedView)
+            {
+                questionsAnswered = mainWindowViewModel?.ActivePack?.Questions.Count;
+            }
+            else if (QuizState == QuizState.Asking)
+            {
+                questionsAnswered = CurrentQuestionIndex;
+            }
+            else
+            {
+                questionsAnswered = CurrentQuestionIndex + 1;
+            }
+
+            questionNumberString = $"Question  {questionNumber}  of  {totalQuestionNumber}\n ";
+            questionScoreString = $"Points: {CurrentScore} of {questionsAnswered}";
+
+            
+            ProgressionString = questionNumberString + questionScoreString;
+        }
 
         // Lektion 114.
         // I WPF finns det en UI-tråd och det är bara den som får uppdatera WPF-kontrollerna. 
@@ -166,6 +250,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         private void StartQuiz(object obj)
         {
             if (!mainWindowViewModel.ShowPlayerView) { mainWindowViewModel.ShowPlayerView = true; }
+
+            ResetButtonColors();
+
             CurrentQuestionIndex = 0;
             CurrentScore = 0;
 
@@ -184,6 +271,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
+            
+            //if (mainWindowViewModel?.ShowQuizCompletedView ?? false) { timer.Stop(); }
             //TestData += 'x';
             if(QuizState == QuizState.Asking)
             {
@@ -197,30 +286,38 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     //CurrentQuestionIndex++;
                     //StartCurrentQuestion();
                     QuizState = QuizState.ShowingCorrectAnswer;
-                    TimeToDisplayCorrectAnswerInSeconds = 3;
+                    OnScoringQuestion(null);
+                    UpdateProgressionString();
+                    TimeLeftToDisplayCorrectAnswerInSeconds = TotalTimeToDisplayCorrectAnswerInSeconds;
                 }
                 else
                 {
-                    mainWindowViewModel.ShowQuizCompletedView = true;
+                    //mainWindowViewModel.ShowQuizCompletedView = true;
+                    //UpdateProgressionString();
+                    QuizState = QuizState.ShowingCorrectAnswer;
+                    OnScoringQuestion(null);
                 }
             }
             else
             {
-                if(TimeToDisplayCorrectAnswerInSeconds <= 0)
+                if(TimeLeftToDisplayCorrectAnswerInSeconds <= 0)
                 {
                     QuizState = QuizState.Asking;
 
                     if(CurrentQuestionIndex < (ActivePack.Questions.Count - 1))
                     {
                         CurrentQuestionIndex++;
+                        UpdateProgressionString();
                         StartCurrentQuestion();
                     }
                     else
                     {
+
                         mainWindowViewModel.ShowQuizCompletedView = true;
+                        UpdateProgressionString();
                     }
                 }
-                TimeToDisplayCorrectAnswerInSeconds--;
+                TimeLeftToDisplayCorrectAnswerInSeconds--;
             }
         }
 
@@ -232,10 +329,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
         // Code for handling button clicks.
-        public ObservableCollection<AnswerOption> AnswerOptions { get; set; }
+        public ObservableCollection<AnswerOption> AnswerOptions { get; }
         private readonly Random random = new Random();
 
-        private int TimeToDisplayCorrectAnswerInSeconds = 3;
+        private const int TotalTimeToDisplayCorrectAnswerInSeconds = 1;
+        private int TimeLeftToDisplayCorrectAnswerInSeconds = TotalTimeToDisplayCorrectAnswerInSeconds;
         private string _selectedAnswer;
         private int _correctAnswerIndex;
         
@@ -245,7 +343,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         private void LoadAnswerOptions()
         {
-            AnswerOptions.Clear();
+            //AnswerOptions.Clear();
 
             List<AnswerOption> options = new List<AnswerOption>
             {
@@ -262,8 +360,38 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 shuffledOptions[i].OptionIndex = i;
             }
 
-            AnswerOptions = new ObservableCollection<AnswerOption>(shuffledOptions);
-            
+            //AnswerOptions = new ObservableCollection<AnswerOption>(shuffledOptions);
+            for (int i = 0; i < AnswerOptions.Count; i++)
+            {
+                AnswerOptions[i].AnswerText = shuffledOptions[i].AnswerText;
+                AnswerOptions[i].IsCorrect = shuffledOptions[i].IsCorrect;
+                AnswerOptions[i].OptionIndex = shuffledOptions[i].OptionIndex;
+                AnswerOptions[i].BackgroundColor = shuffledOptions[i].BackgroundColor;
+            }
+
+            //AnswerOption1.AnswerText      = shuffledOptions[0].AnswerText;
+            //AnswerOption1.IsCorrect       = shuffledOptions[0].IsCorrect;
+            //AnswerOption1.OptionIndex     = shuffledOptions[0].OptionIndex;
+            //AnswerOption1.BackgroundColor = shuffledOptions[0].BackgroundColor;
+
+            //AnswerOption2.AnswerText      = shuffledOptions[1].AnswerText;
+            //AnswerOption2.IsCorrect       = shuffledOptions[1].IsCorrect;
+            //AnswerOption2.OptionIndex     = shuffledOptions[1].OptionIndex;
+            //AnswerOption2.BackgroundColor = shuffledOptions[1].BackgroundColor;
+
+            //AnswerOption3.AnswerText      = shuffledOptions[2].AnswerText;
+            //AnswerOption3.IsCorrect       = shuffledOptions[2].IsCorrect;
+            //AnswerOption3.OptionIndex     = shuffledOptions[2].OptionIndex;
+            //AnswerOption3.BackgroundColor = shuffledOptions[2].BackgroundColor;
+
+            //AnswerOption4.AnswerText      = shuffledOptions[3].AnswerText;
+            //AnswerOption4.IsCorrect       = shuffledOptions[3].IsCorrect;
+            //AnswerOption4.OptionIndex     = shuffledOptions[3].OptionIndex;
+            //AnswerOption4.BackgroundColor = shuffledOptions[3].BackgroundColor;
+
+
+
+            RaisePropertyChanged("AnswerOptions");
         }
 
 
@@ -271,15 +399,20 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         {
             var selectedOption = parameter as AnswerOption;
 
+            if (selectedOption?.IsCorrect ?? false) { 
+                CurrentScore++;
+            }
+
             DisplayCorrectAnswerButton();
 
-            if(!selectedOption.IsCorrect)
+            if(!selectedOption?.IsCorrect ?? false && selectedOption != null)
             {
                 AnswerOptions[selectedOption.OptionIndex].BackgroundColor = Brushes.Red;
             }
 
-            TimeToDisplayCorrectAnswerInSeconds = 3;
+            TimeLeftToDisplayCorrectAnswerInSeconds = TotalTimeToDisplayCorrectAnswerInSeconds;
             QuizState = QuizState.ShowingCorrectAnswer;
+            UpdateProgressionString();
         }
 
         private void DisplayCorrectAnswerButton()
@@ -289,32 +422,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             {
                 correctAnswer.BackgroundColor = Brushes.Green;
             }
+            RaisePropertyChanged("AnswerOptions");
         }
 
 
 
-        private void UpdateAnswerButtonColors(bool isCorrect, string selectedAnswer)
-        {
-            if (isCorrect)
-            {
-                if(AnswerOption1 == selectedAnswer) { Button1Color = Brushes.Green; }
-                if(AnswerOption2 == selectedAnswer) { Button2Color = Brushes.Green; }
-                if(AnswerOption3 == selectedAnswer) { Button3Color = Brushes.Green; }
-                if(AnswerOption4 == selectedAnswer) { Button4Color = Brushes.Green; }
-            }
-            else
-            {
-                if (AnswerOption1 == selectedAnswer) { Button1Color = Brushes.Red; }
-                if (AnswerOption2 == selectedAnswer) { Button2Color = Brushes.Red; }
-                if (AnswerOption3 == selectedAnswer) { Button3Color = Brushes.Red; }
-                if (AnswerOption4 == selectedAnswer) { Button4Color = Brushes.Red; }
-
-                if(AnswerOption1 == CurrentQuestion?.CorrectAnswer) { Button1Color = Brushes.Green; }
-                if(AnswerOption2 == CurrentQuestion?.CorrectAnswer) { Button2Color = Brushes.Green; }
-                if(AnswerOption3 == CurrentQuestion?.CorrectAnswer) { Button3Color = Brushes.Green; }
-                if(AnswerOption4 == CurrentQuestion?.CorrectAnswer) { Button4Color = Brushes.Green; }
-            }
-        }
+        
 
         private void ResetButtonColors()
         {
@@ -356,33 +469,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
 
-        private string _answerOption1;
-        public string AnswerOption1
-        {
-            get => _answerOption1;
-            set { _answerOption1 = value; RaisePropertyChanged(); }
-        }
-
-        private string _answerOption2;
-        public string AnswerOption2
-        {
-            get => _answerOption2;
-            set { _answerOption2 = value; RaisePropertyChanged(); }
-        }
-
-        private string _answerOption3;
-        public string AnswerOption3
-        {
-            get => _answerOption3;
-            set { _answerOption3 = value; RaisePropertyChanged(); }
-        }
-
-        private string _answerOption4;
-        public string AnswerOption4
-        {
-            get => _answerOption4;
-            set { _answerOption4 = value; RaisePropertyChanged(); }
-        }
+        
 
 
     }

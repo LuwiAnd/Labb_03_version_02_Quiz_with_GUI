@@ -2,6 +2,7 @@
 using Labb_03_version_02_Quiz_with_GUI.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,20 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         private readonly MainWindowViewModel? mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
-        public Question? SelectedQuestion { 
-            get => mainWindowViewModel.SelectedQuestion;
-            set => mainWindowViewModel.SelectedQuestion = value;
+        //public Question? SelectedQuestion { 
+        //    get => mainWindowViewModel.SelectedQuestion;
+        //    set => mainWindowViewModel.SelectedQuestion = value;
+        //}
+        private ObservableCollection<Question>? _selectedQuestions = new ObservableCollection<Question>();
+        public ObservableCollection<Question>? SelectedQuestions
+        {
+            get => _selectedQuestions;
+            set
+            {
+                _selectedQuestions = value;
+                RaisePropertyChanged();
+
+            }
         }
 
         public bool HasSelectedQuestion

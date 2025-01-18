@@ -85,35 +85,73 @@
                     CommandParameter="{Binding AnswerOptions[0]}"
                     />
                     <!--Content="{Binding AnswerOptions[0].AnswerText}"-->
+                <Button x:Name="buttonAnswer2"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="5 30 30 5"
+                    Content="{Binding AnswerOptions[1].AnswerText}"
+                    Background="{Binding AnswerOptions[1].BackgroundColor}"
+                    Command="{Binding AnswerCommand}"
+                    CommandParameter="{Binding AnswerOptions[1]}"
+                    />
+                    <!--Background="#FF00FF"-->
+                <Button x:Name="buttonAnswer3"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="30 5 5 30"
+                    Content="{Binding AnswerOptions[2].AnswerText}"
+                    Background="{Binding AnswerOptions[2].BackgroundColor}"
+                    Command="{Binding AnswerCommand}"
+                    CommandParameter="{Binding AnswerOptions[2]}"
+                    />
+                <Button x:Name="buttonAnswer4"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="5 5 30 30"
+                    Content="{Binding AnswerOptions[3].AnswerText}"
+                    Background="{Binding AnswerOptions[3].BackgroundColor}"
+                    Command="{Binding AnswerCommand}"
+                    CommandParameter="{Binding AnswerOptions[3]}"
+                    />
+
+            <!--<Button x:Name="buttonAnswer1"
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="30 30 5 5"
+                Content="{Binding AnswerOption1.AnswerText}"
+                Background="{Binding AnswerOption1.BackgroundColor}"
+                Command="{Binding AnswerCommand}"
+                CommandParameter="{Binding AnswerOption1}"
+                />
+            --><!--Content="{Binding AnswerOptions[0].AnswerText}"--><!--
             <Button x:Name="buttonAnswer2"
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="5 30 30 5"
-                Content="{Binding AnswerOptions[1].AnswerText}"
-                Background="{Binding AnswerOptions[1].BackgroundColor}"
+                Content="{Binding AnswerOption2.AnswerText}"
+                Background="{Binding AnswerOption2.BackgroundColor}"
                 Command="{Binding AnswerCommand}"
-                CommandParameter="{Binding AnswerOptions[1]}"
+                CommandParameter="{Binding AnswerOption2}"
                 />
-                    <!--Background="#FF00FF"-->
+            --><!--Background="#FF00FF"--><!--
             <Button x:Name="buttonAnswer3"
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="30 5 5 30"
-                Content="{Binding AnswerOptions[2].AnswerText}"
-                Background="{Binding AnswerOptions[2].BackgroundColor}"
+                Content="{Binding AnswerOption3.AnswerText}"
+                Background="{Binding AnswerOption3.BackgroundColor}"
                 Command="{Binding AnswerCommand}"
-                CommandParameter="{Binding AnswerOptions[2]}"
+                CommandParameter="{Binding AnswerOption3}"
                 />
             <Button x:Name="buttonAnswer4"
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="5 5 30 30"
-                Content="{Binding AnswerOptions[3].AnswerText}"
-                Background="{Binding AnswerOptions[3].BackgroundColor}"
+                Content="{Binding AnswerOption4.AnswerText}"
+                Background="{Binding AnswerOption4.BackgroundColor}"
                 Command="{Binding AnswerCommand}"
-                CommandParameter="{Binding AnswerOptions[3]}"
-                />
-
+                CommandParameter="{Binding AnswerOption4}"
+                />-->
         </Grid>
     </Grid>
 </UserControl>
