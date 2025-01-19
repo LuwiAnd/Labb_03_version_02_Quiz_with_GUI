@@ -94,7 +94,9 @@
                      ItemsSource="{Binding ActivePack.Questions}"
                      SelectionMode="Multiple"
                      SelectedItem="{Binding SelectedQuestion, Mode=TwoWay}"
+                     SelectedItems="{Binding SelectedQuestions, Mode=TwoWay}"
                      >
+                     <!--SelectedItem="{Binding SelectedQuestion, Mode=TwoWay}"-->
                      <!--SelectionMode="Extended"-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -116,8 +118,9 @@
 
         <StackPanel 
             Grid.Column="1"
-            Visibility="{Binding HasSelectedQuestion, Converter={StaticResource BoolToVisibilityConverter}}"
-        >
+            Visibility="{Binding HasSelectedQuestions, Converter={StaticResource BoolToVisibilityConverter}}"
+            >
+            <!--Visibility="{Binding HasSelectedQuestion, Converter={StaticResource BoolToVisibilityConverter}}"-->
                 <!--Content="{Binding HasSelectedQuestion}"--> 
             <Label 
                 Margin="5, 10, 0, 0"
@@ -131,6 +134,7 @@
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
             />
+                <!--Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"--> 
 
 
             <Label 
