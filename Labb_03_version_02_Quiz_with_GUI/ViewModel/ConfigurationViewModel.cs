@@ -20,6 +20,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             set => mainWindowViewModel.SelectedQuestion = value;
         }
 
+        public DelegateCommand OpenActivePackConfigurationCommand { get => mainWindowViewModel!.OpenActivePackConfigurationCommand; }
 
         private ObservableCollection<Question>? _selectedQuestions = new ObservableCollection<Question>();
         public ObservableCollection<Question>? SelectedQuestions
@@ -35,14 +36,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             }
         }
 
-        /*
+        
         public bool HasSelectedQuestion
         {
             get => mainWindowViewModel.HasSelectedQuestion;
             set => mainWindowViewModel.HasSelectedQuestion = value;
         }
-        */
-        public bool HasSelectedQuestions => SelectedQuestions != null && SelectedQuestions.Any();
+        
+        //public bool HasSelectedQuestions => SelectedQuestions != null && SelectedQuestions.Any();
 
         public bool ShowConfigurationView
         {
@@ -59,8 +60,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             this.mainWindowViewModel = mainWindowViewModel;
             //this.HasSelectedQuestion = mainWindowViewModel.HasSelectedQuestion;
 
-            //RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
-            RemoveQuestionCommand = new DelegateCommand(RemoveQuestions, CanRemoveQuestions);
+            RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+            //RemoveQuestionCommand = new DelegateCommand(RemoveQuestions, CanRemoveQuestions);
             AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
         }
 
@@ -72,18 +73,17 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         // Funktioner till DelegateCommand ---------------------------
 
         // DelegateCommand för att ta bort en fråga.
-        /*
         private bool CanRemoveQuestion(object? arg)
         {
             return mainWindowViewModel.SelectedQuestion != null;
         }
-        */
+        /*
         private bool CanRemoveQuestions(object? arg)
         {
             return HasSelectedQuestions;
         }
+        */
 
-        /*
         private void RemoveQuestion(object arg)
         {
             if (ActivePack != null && SelectedQuestion != null)
@@ -94,7 +94,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 mainWindowViewModel.SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
             }
         }
-        */
+        /*
         private void RemoveQuestions(object arg)
         {
             if (ActivePack != null && SelectedQuestions != null)
@@ -110,6 +110,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 mainWindowViewModel?.SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
             }
         }
+        */
 
         // DelegateCommand för att lägga till en fråga.
 

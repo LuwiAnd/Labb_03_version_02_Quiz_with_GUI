@@ -1,5 +1,6 @@
 ﻿using Labb_03_version_02_Quiz_with_GUI.Command;
 using Labb_03_version_02_Quiz_with_GUI.Model;
+using Labb_03_version_02_Quiz_with_GUI.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -197,8 +198,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public DelegateCommand SwitchToConfigurationViewCommand { get; }
         public DelegateCommand SwitchToPlayerViewCommand { get; }
+        //public DelegateCommand UpdateActivePackCommand { get; }
 
         public DelegateCommand StartQuiz { get; }
+
+        public DelegateCommand OpenActivePackConfigurationCommand { get; }
 
 
         public MainWindowViewModel()
@@ -247,20 +251,27 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 _ => !ShowPlayerView && ActivePack.Questions.Count > 0
             );
 
+            OpenActivePackConfigurationCommand = new DelegateCommand(
+                execute: OpenActivePackConfiguration,
+                canExecute: _ => HasActivePack
+            );
+            //UpdateActivePackCommand = new DelegateCommand(...)
+
             //CurrentView = ConfigurationViewModel;
             ShowConfigurationView =  true;
             ShowPlayerView =  false;
             ShowQuizCompletedView =  false;
         }
 
-        /*
-        private void ChangeView(string view)
+        public void OpenActivePackConfiguration(object? arg)
         {
-            if(view == "config")
+            var activePackConfiguration = new ConfigureActiveQuestionPackViewModel(this);
+            var configureWindow = new ConfigureActiveQuestionPack
             {
-                ShowConfigurationView = true;
-            }
+                DataContext = activePackConfiguration
+            };
+            //activePackConfiguration.showDialog();
+            configureWindow.ShowDialog();
         }
-        */
     }
 }
