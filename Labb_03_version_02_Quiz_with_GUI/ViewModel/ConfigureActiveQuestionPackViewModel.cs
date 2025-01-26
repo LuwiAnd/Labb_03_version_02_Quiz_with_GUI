@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    internal class ConfigureActiveQuestionPackViewModel : ViewModelBase
+    public class ConfigureActiveQuestionPackViewModel : ViewModelBase
     {
         public ConfigureActiveQuestionPackViewModel(MainWindowViewModel mainWindowViewModel)
         {

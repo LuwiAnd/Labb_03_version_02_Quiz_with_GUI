@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    internal class ConfigurationViewModel : ViewModelBase
+    public class ConfigurationViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }

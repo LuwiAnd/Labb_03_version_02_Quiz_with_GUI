@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    internal class QuizCompletedViewModel : ViewModelBase
+    public class QuizCompletedViewModel : ViewModelBase
     {
         //private readonly PlayerViewModel playerViewModel;
         private readonly MainWindowViewModel? mainWindowViewModel;

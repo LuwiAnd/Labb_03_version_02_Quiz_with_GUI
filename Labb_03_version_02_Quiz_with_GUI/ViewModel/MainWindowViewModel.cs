@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
 
@@ -266,10 +266,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public void OpenActivePackConfiguration(object? arg)
         {
             var activePackConfiguration = new ConfigureActiveQuestionPackViewModel(this);
-            var configureWindow = new ConfigureActiveQuestionPack
-            {
-                DataContext = activePackConfiguration
-            };
+            var configureWindow = new ConfigureActiveQuestionPack(activePackConfiguration);
+            //{
+            //    DataContext = activePackConfiguration
+            //};
             //activePackConfiguration.showDialog();
             configureWindow.ShowDialog();
         }

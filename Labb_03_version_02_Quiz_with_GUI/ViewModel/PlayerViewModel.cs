@@ -15,8 +15,8 @@ using System.Security.AccessControl;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    enum QuizState { Asking, ShowingCorrectAnswer };
-    internal class PlayerViewModel : ViewModelBase
+    public enum QuizState { Asking, ShowingCorrectAnswer };
+    public class PlayerViewModel : ViewModelBase
     {
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)

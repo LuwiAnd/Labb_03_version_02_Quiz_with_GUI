@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    internal class QuestionPackViewModel : ViewModelBase
+    public class QuestionPackViewModel : ViewModelBase
     {
         private readonly QuestionPack model;
 

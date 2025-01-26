@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
-    internal class AnswerOption : ViewModelBase
+    public class AnswerOption : ViewModelBase
     {
         private string _answerText;
         public string AnswerText { 

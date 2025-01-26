@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Labb_03_version_02_Quiz_with_GUI.Command
 {
-    internal class DelegateCommand : ICommand
+    public class DelegateCommand : ICommand
     {
         private readonly Action<object> execute;
         private readonly Func<object?, bool> canExecute;

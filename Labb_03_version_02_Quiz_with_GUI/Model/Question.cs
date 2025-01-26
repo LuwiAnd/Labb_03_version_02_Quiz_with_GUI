@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Labb_03_version_02_Quiz_with_GUI.Model
 {
-    internal class Question
+    public class Question
     {
 
         public Question(

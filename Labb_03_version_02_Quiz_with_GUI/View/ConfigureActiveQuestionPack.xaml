@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb_03_version_02_Quiz_with_GUI.View"
-        DataContext="ConfigureActiveQuestionPackViewModel"
         mc:Ignorable="d"
         Title="ConfigureActiveQuestionPack" Height="450" Width="400">
+        <!--DataContext="ConfigureActiveQuestionPackViewModel"-->
+        <!--xmlns:mydatacontextnamespace="clr-namespace:Labb_03_version_02_Quiz_with_GUI.ViewModel"-->
+
+    <!--<Window.DataContext>
+        <mydatacontextnamespace:ConfigureActiveQuestionPackViewModel />
+    </Window.DataContext>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
@@ -26,7 +31,7 @@
                 Height="50" 
                 HorizontalAlignment="Left" 
                 Margin="12, 0, 10, 0"
-                Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
             />
         </StackPanel>
         <StackPanel Grid.Row="1">
