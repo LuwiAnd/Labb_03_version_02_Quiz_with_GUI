@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:Labb_03_version_02_Quiz_with_GUI.View"
+             xmlns:viewmodel="clr-namespace:Labb_03_version_02_Quiz_with_GUI.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,10 +15,24 @@
                 <!-- Lektion 111 cirka 45 minuter in: Fredrik tror inte att FolderOpen är case-sensitive. Man ska ta bort bindestreck ur iconerna på hemsidan. -->
                 <!-- https://fontawesome.com/search?m=free&o=r -->
                 <MenuItem Header="_New Question Pack" 
-                          Icon="{fa:Icon FolderOpen}"/>
+                          Icon="{fa:Icon FolderOpen}"
+                          InputGestureText="Ctrl + N"
+                          Command="{Binding Path=OpenCreateNewQuestionPackCommand}"
+                          />
                 <Separator />
-                <MenuItem Header="E_xit" />
-            </MenuItem>
+                <MenuItem Header="Select Question Pack"  ItemsSource="{Binding Packs}">
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate>
+                                <MenuItem Header="{Binding Name}"
+                                          Command="{Binding DataContext.SelectPackCommand,
+                                                    RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding}"
+                                          />
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                </MenuItem>
+            <MenuItem Header="E_xit" />
 
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Add Question" />

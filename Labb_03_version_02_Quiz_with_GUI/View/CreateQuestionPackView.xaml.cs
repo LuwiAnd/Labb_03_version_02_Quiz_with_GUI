@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Labb_03_version_02_Quiz_with_GUI.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.View
     /// </summary>
     public partial class CreateQuestionPackView : Window
     {
-        public CreateQuestionPackView()
+        public CreateQuestionPackView(CreateQuestionPackViewModel viewmodel)
         {
             InitializeComponent();
+            DataContext = viewmodel;
         }
     }
 }

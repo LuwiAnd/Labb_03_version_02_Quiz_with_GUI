@@ -203,6 +203,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public DelegateCommand StartQuiz { get; }
 
         public DelegateCommand OpenActivePackConfigurationCommand { get; }
+        public DelegateCommand OpenCreateNewQuestionPackCommand { get; }
+
+        //public DelegateCommand<QuestionPackViewModel> SelectPackCommand { get; }
 
 
         public MainWindowViewModel()
@@ -232,6 +235,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             SelectedQuestion = ActivePack.Questions.FirstOrDefault();
 
+            Packs = new ObservableCollection<QuestionPackViewModel>();
+            Packs.Add(ActivePack);
             
             PlayerViewModel = new PlayerViewModel(this);
 
@@ -257,11 +262,29 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             );
             //UpdateActivePackCommand = new DelegateCommand(...)
 
+            OpenCreateNewQuestionPackCommand = new DelegateCommand(
+                execute: OpenCreateNewQuestionPack,
+                canExecute: _ => true
+            );
+
+            SelectPackCommand = new DelegateCommand(
+                execute: param =>
+                {
+                    if (param is QuestionPackViewModel pack)
+                    {
+                        ActivePack = pack;
+                    }
+                },
+                canExecute: param => param is QuestionPackViewModel
+            );
+
             //CurrentView = ConfigurationViewModel;
             ShowConfigurationView =  true;
             ShowPlayerView =  false;
             ShowQuizCompletedView =  false;
         }
+
+        public DelegateCommand SelectPackCommand { get; }
 
         public void OpenActivePackConfiguration(object? arg)
         {
@@ -272,6 +295,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             //};
             //activePackConfiguration.showDialog();
             configureWindow.ShowDialog();
+        }
+
+        public void OpenCreateNewQuestionPack(object? arg)
+        {
+            var newPackConfiguration = new CreateQuestionPackViewModel(this);
+            var createQuestionPackWindow = new CreateQuestionPackView(newPackConfiguration);
+
+            createQuestionPackWindow.ShowDialog();
         }
     }
 }
