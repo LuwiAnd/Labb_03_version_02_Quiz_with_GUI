@@ -207,6 +207,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         //public DelegateCommand<QuestionPackViewModel> SelectPackCommand { get; }
 
+        public DelegateCommand SaveJsonCommand { get; }
 
         public MainWindowViewModel()
         {
