@@ -27,6 +27,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.Model
             };
         }
 
+        // Parameterlös konstruktor för JSON, för att kunna ladda in json från en fil.
+        public Question()
+        {
+            Query = "";
+            CorrectAnswer = "";
+            IncorrectAnswers = new string[3];
+        }
+
         public string Query { get; set; }
         public string CorrectAnswer { get; set; }
 

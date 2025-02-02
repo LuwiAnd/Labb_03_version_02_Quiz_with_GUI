@@ -31,8 +31,19 @@
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>
-                </MenuItem>
-            <MenuItem Header="E_xit" />
+
+                <MenuItem Header="Save All Question Packs to Disk"
+                      Command="{Binding SaveJsonCommand}"
+                      />
+
+                <MenuItem Header="Load Question Packs from Disk"
+                    Command="{Binding LoadJsonCommand}"
+                    />
+
+                <MenuItem Header="E_xit" />
+            </MenuItem>
+
+            
 
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Add Question" />

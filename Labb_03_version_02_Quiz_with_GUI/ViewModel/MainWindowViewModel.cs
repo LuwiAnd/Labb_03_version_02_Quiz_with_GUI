@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
+using System.Windows;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
@@ -200,7 +203,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public DelegateCommand SwitchToPlayerViewCommand { get; }
         //public DelegateCommand UpdateActivePackCommand { get; }
 
-        public DelegateCommand StartQuiz { get; }
+        //public DelegateCommand StartQuizCommand { get; }
 
         public DelegateCommand OpenActivePackConfigurationCommand { get; }
         public DelegateCommand OpenCreateNewQuestionPackCommand { get; }
@@ -279,6 +282,16 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 canExecute: param => param is QuestionPackViewModel
             );
 
+            SaveJsonCommand = new DelegateCommand(
+                execute: SaveAllQuestionPacksToJson, 
+                canExecute: CanSaveAllQuestionPacksToJson
+            );
+
+            LoadJsonCommand = new DelegateCommand(
+                execute: LoadQuizesFromJson,
+                canExecute: _ => true
+            );
+
             //CurrentView = ConfigurationViewModel;
             ShowConfigurationView =  true;
             ShowPlayerView =  false;
@@ -304,6 +317,115 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             var createQuestionPackWindow = new CreateQuestionPackView(newPackConfiguration);
 
             createQuestionPackWindow.ShowDialog();
+        }
+
+
+        private readonly JsonSerializerOptions _options = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+        };
+
+        public void SaveAllQuestionPacksToJson(object? arg)
+        {
+            string json = JsonSerializer.Serialize(this.Packs, _options);
+
+            string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
+            string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
+
+            Directory.CreateDirectory(jsonFolder);
+
+            string fileName = "UserQuizes.json";
+            string filePath = Path.Combine(jsonFolder, fileName);
+
+            try
+            {
+                File.WriteAllText(filePath, json);
+                MessageBox.Show(
+                    $"Quizes saved successfully to:\n{filePath}",
+                    "Save Successful",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error saving quizes:\n{ex.Message}",
+                    "Save Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+        }
+
+        public bool CanSaveAllQuestionPacksToJson(object? arg)
+        {
+            return true;
+        }
+
+
+        public DelegateCommand LoadJsonCommand { get; }
+        public void LoadQuizesFromJson(object? arg)
+        {
+            string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
+            string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
+            string fileName = "UserQuizes.json";
+            string filePath = Path.Combine(jsonFolder, fileName);
+
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    MessageBox.Show(
+                        $"No saved quizes found at:\n{filePath}",
+                        "Loading error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    return;
+                }
+
+                string json = File.ReadAllText(filePath);
+                var loadedPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(json, _options);
+
+                if(loadedPacks != null && loadedPacks.Any())
+                {
+                    Packs.Clear();
+
+                    foreach(var pack in loadedPacks)
+                    {
+                        Packs.Add(pack);
+                    }
+
+                    ActivePack = Packs.LastOrDefault();
+
+                    MessageBox.Show(
+                        $"Quizes loaded successfully from:\n{filePath}",
+                        "Load Successful",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"No Quizes found in:\n{filePath}",
+                        "Load empty",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error loading quizes:\n{ex.Message}",
+                    "Load Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
     }
 }
