@@ -28,7 +28,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             SecondsRemainingToAnswer = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             StartQuizCommand = new DelegateCommand(execute: StartQuiz, canExecute: CanStartQuiz);
 
-            TestData = "Start valuee: ";
+            //TestData = "Start valuee: ";
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -53,7 +53,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             AnswerOption3 = new AnswerOption("", false);
             AnswerOption4 = new AnswerOption("", false);
 
-            LoadAnswerOptions();
+            if(mainWindowViewModel?.ActivePack?.Questions.Any() == true)
+            {
+                LoadAnswerOptions();
+            }
         }
 
         private AnswerOption _answerOption1;
@@ -144,7 +147,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         }
 
         public Question? CurrentQuestion {
-            get => ActivePack.Questions[CurrentQuestionIndex];
+            //get => ActivePack.Questions[CurrentQuestionIndex];
+            get => ActivePack.Questions != null && ActivePack.Questions.Count > CurrentQuestionIndex ? ActivePack.Questions[CurrentQuestionIndex] : null;
         }
 
         //public string ProgressionString { get => $"Question  {CurrentQuestionIndex + 1}  of  {ActivePack?.Questions.Count}"; }

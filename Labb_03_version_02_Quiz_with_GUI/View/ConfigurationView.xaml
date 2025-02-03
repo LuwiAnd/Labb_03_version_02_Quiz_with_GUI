@@ -133,6 +133,7 @@
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                LostFocus="TextBox_LostFocus"
             />
                 <!--Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"--> 
 
@@ -148,6 +149,7 @@
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                LostFocus="TextBox_LostFocus"
             />
 
 
@@ -162,6 +164,7 @@
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                LostFocus="TextBox_LostFocus"
             />
 
 
@@ -176,6 +179,7 @@
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                LostFocus="TextBox_LostFocus"
             />
 
 
@@ -190,6 +194,7 @@
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                LostFocus="TextBox_LostFocus"
             />
             
             

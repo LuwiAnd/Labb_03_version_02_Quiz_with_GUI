@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Labb_03_version_02_Quiz_with_GUI.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.View
         public ConfigurationView()
         {
             InitializeComponent();
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var mainViewModel = ((ConfigurationViewModel)DataContext).mainWindowViewModel;
+            mainViewModel?.SaveJsonCommand.Execute(null);
         }
     }
 }

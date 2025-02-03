@@ -11,7 +11,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
     public class ConfigurationViewModel : ViewModelBase
     {
-        private readonly MainWindowViewModel? mainWindowViewModel;
+
+        // Ändrade från private till public för att komma åt från code-behind i ConfigurationView.xaml.cs.
+        public readonly MainWindowViewModel? mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
 
         public Question? SelectedQuestion
@@ -92,6 +94,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
                 mainWindowViewModel.PlayerViewModel.StartQuizCommand.RaiseCanExecuteChanged();
                 mainWindowViewModel.SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+
+                mainWindowViewModel.SaveJsonCommand.Execute(null);
             }
         }
         /*
@@ -138,6 +142,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
                 mainWindowViewModel?.PlayerViewModel.StartQuizCommand.RaiseCanExecuteChanged();
                 mainWindowViewModel?.SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+
+                mainWindowViewModel?.SaveJsonCommand.Execute(null);
             }
         }
 

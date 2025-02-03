@@ -212,35 +212,45 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public DelegateCommand SaveJsonCommand { get; }
 
+        public DelegateCommand RemoveActivePackCommand { get; }
+
         public MainWindowViewModel()
         {
             ConfigurationViewModel = new ConfigurationViewModel(this);
-            // Lektion 112. 26 minuter.
-            ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
 
-            // Testfrågor tillagda 2025-01-04.
-            ActivePack.Questions.Add(new Question(
-                query: "Vad vill man svara på frågor?",
-                correctAnswer: "korrekt svar",
-                incorrectAnswer1: "inkorr1",
-                incorrectAnswer2: "inkorr2",
-                incorrectAnswer3: "inkorr3kt"
-            ));
+            Packs = new ObservableCollection<QuestionPackViewModel>();
 
-            /*
-            ActivePack.Questions.Add(new Question(
-                query: "Andra frågan?",
-                correctAnswer: "Ja, korrekt svar",
-                incorrectAnswer1: "Nej, inkorr1",
-                incorrectAnswer2: "Nej, inkorr2",
-                incorrectAnswer3: "Nej, inkorr3kt"
-            ));
-            */
+            LoadJsonCommand = new DelegateCommand(
+                execute: LoadQuizesFromJson,
+                canExecute: _ => true
+            );
+
+            LoadJsonCommand.Execute(null);
+
+            if(ActivePack == null)
+            {
+                // Lektion 112. 26 minuter.
+                ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
+
+                // Testfrågor tillagda 2025-01-04.
+                ActivePack.Questions.Add(new Question(
+                    query: "Vad vill man svara på frågor?",
+                    correctAnswer: "korrekt svar",
+                    incorrectAnswer1: "inkorr1",
+                    incorrectAnswer2: "inkorr2",
+                    incorrectAnswer3: "inkorr3kt"
+                ));
+
+                Packs.Add(ActivePack);
+            }
+            
+
+            
 
             SelectedQuestion = ActivePack.Questions.FirstOrDefault();
 
-            Packs = new ObservableCollection<QuestionPackViewModel>();
-            Packs.Add(ActivePack);
+            
+            
             
             PlayerViewModel = new PlayerViewModel(this);
 
@@ -287,8 +297,18 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 canExecute: CanSaveAllQuestionPacksToJson
             );
 
-            LoadJsonCommand = new DelegateCommand(
-                execute: LoadQuizesFromJson,
+            RemoveActivePackCommand = new DelegateCommand(
+                execute: RemoveActivePack,
+                canExecute: _ => ActivePack != null
+            );
+
+            ToggleFullScreenCommand = new DelegateCommand(
+                execute: ToggleFullScreen,
+                canExecute: _ => true
+            );
+
+            ExitCommand = new DelegateCommand(
+                execute: Exit,
                 canExecute: _ => true
             );
 
@@ -426,6 +446,46 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     MessageBoxImage.Error
                 );
             }
+        }
+
+        public void RemoveActivePack(object? args)
+        {
+            if(ActivePack != null)
+            {
+                Packs.Remove(ActivePack);
+                ActivePack = Packs.LastOrDefault();
+
+                SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+                OpenActivePackConfigurationCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public DelegateCommand ToggleFullScreenCommand { get; }
+
+        public void ToggleFullScreen(object? arg)
+        {
+            var window = System.Windows.Application.Current.MainWindow;
+            if(window != null)
+            {
+                if(window.WindowState != WindowState.Maximized)
+                {
+                    window.WindowState = WindowState.Maximized;
+                    window.WindowStyle = WindowStyle.None;
+                }
+                else
+                {
+                    window.WindowState = WindowState.Normal;
+                    window.WindowStyle = WindowStyle.SingleBorderWindow;
+                }
+            }
+        }
+
+        public DelegateCommand ExitCommand { get; }
+
+        public void Exit(object? arg)
+        {
+            SaveJsonCommand.Execute(null);
+            Application.Current.Shutdown();
         }
     }
 }

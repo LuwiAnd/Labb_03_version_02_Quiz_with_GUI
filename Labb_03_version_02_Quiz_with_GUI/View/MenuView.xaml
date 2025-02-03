@@ -20,7 +20,12 @@
                           Command="{Binding Path=OpenCreateNewQuestionPackCommand}"
                           />
                 <Separator />
-                <MenuItem Header="Select Question Pack"  ItemsSource="{Binding Packs}">
+
+                <MenuItem Header="_Delete Active Quiz"
+                          Command="{Binding Path=RemoveActivePackCommand}"
+                          />
+
+                <MenuItem Header="_Select Question Pack"  ItemsSource="{Binding Packs}">
                         <MenuItem.ItemTemplate>
                             <DataTemplate>
                                 <MenuItem Header="{Binding Name}"
@@ -32,15 +37,18 @@
                         </MenuItem.ItemTemplate>
                     </MenuItem>
 
-                <MenuItem Header="Save All Question Packs to Disk"
+                <!--Dessa två val kan användas för testning.-->
+                <!--<MenuItem Header="Save All Question Packs to Disk"
                       Command="{Binding SaveJsonCommand}"
                       />
 
                 <MenuItem Header="Load Question Packs from Disk"
                     Command="{Binding LoadJsonCommand}"
-                    />
+                    />-->
 
-                <MenuItem Header="E_xit" />
+                <MenuItem Header="E_xit" 
+                          Command="{Binding ExitCommand}"
+                          />
             </MenuItem>
 
             
@@ -62,7 +70,9 @@
                 <MenuItem Header="Edit"
                           Command="{Binding Path=SwitchToConfigurationViewCommand}"
                           />
-                <MenuItem Header="Fullscreen"/>
+                <MenuItem Header="Toggle Fullscreen"
+                          Command="{Binding ToggleFullScreenCommand}"
+                          />
             </MenuItem>
         </Menu>
             

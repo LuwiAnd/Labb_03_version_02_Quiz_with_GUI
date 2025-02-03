@@ -58,6 +58,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     {
                         w.Close();
                     }
+
+                    mainWindowViewModel.SaveJsonCommand.Execute(null);
                 }
             );
 

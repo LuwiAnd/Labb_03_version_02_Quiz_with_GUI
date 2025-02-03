@@ -53,6 +53,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     {
                         w.Close();
                     }
+
+                    mainWindowViewModel.SaveJsonCommand.Execute(null);
                 }
             );
 
@@ -68,6 +70,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             mainWindowViewModel.ActivePack.Name = this.PackName;
             mainWindowViewModel.ActivePack.Difficulty = this.Difficulty;
             mainWindowViewModel.ActivePack.TimeLimitInSeconds = this.TimeLimitInSeconds;
+
+            mainWindowViewModel.SaveJsonCommand.Execute(null);
         }
 
         public bool QuizHasChanged = false;
