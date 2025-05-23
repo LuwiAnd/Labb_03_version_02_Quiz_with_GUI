@@ -14,7 +14,9 @@
     </Window.Resources>
     <Window.InputBindings>
         <!-- Lektion 116. Tangentbordsgenvägar. Cirka 12 minuter in. -->
-        <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding Path=PlayerViewModel.UpdateButtonCommand}"/>
+        <!--<KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding Path=PlayerViewModel.UpdateButtonCommand}"/>-->
+
+        <KeyBinding Key="X" Modifiers="Ctrl" Command="{Binding ExitCommand}"/>
     </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>

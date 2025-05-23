@@ -210,7 +210,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         //public DelegateCommand<QuestionPackViewModel> SelectPackCommand { get; }
 
-        public DelegateCommand SaveJsonCommand { get; }
+        //public DelegateCommand SaveJsonCommand { get; }
+        public DelegateCommandAsync SaveJsonCommand { get; }
 
         public DelegateCommand RemoveActivePackCommand { get; }
 
@@ -220,8 +221,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
-            LoadJsonCommand = new DelegateCommand(
-                execute: LoadQuizesFromJson,
+            //LoadJsonCommand = new DelegateCommand(
+            LoadJsonCommand = new DelegateCommandAsync(
+                execute: LoadQuizesFromJsonAsync,
                 canExecute: _ => true
             );
 
@@ -292,7 +294,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 canExecute: param => param is QuestionPackViewModel
             );
 
-            SaveJsonCommand = new DelegateCommand(
+            //SaveJsonCommand = new DelegateCommand(
+            SaveJsonCommand = new DelegateCommandAsync(
                 execute: SaveAllQuestionPacksToJson, 
                 canExecute: CanSaveAllQuestionPacksToJson
             );
@@ -346,7 +349,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             WriteIndented = true
         };
 
-        public void SaveAllQuestionPacksToJson(object? arg)
+        //public void SaveAllQuestionPacksToJson(object? arg)
+        public async Task SaveAllQuestionPacksToJson(object? arg)
         {
             string json = JsonSerializer.Serialize(this.Packs, _options);
 
@@ -360,7 +364,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             try
             {
-                File.WriteAllText(filePath, json);
+                //File.WriteAllText(filePath, json);
+                await File.WriteAllTextAsync(filePath, json);
+
                 MessageBox.Show(
                     $"Quizes saved successfully to:\n{filePath}",
                     "Save Successful",
@@ -385,8 +391,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         }
 
 
-        public DelegateCommand LoadJsonCommand { get; }
-        public void LoadQuizesFromJson(object? arg)
+        //public DelegateCommand LoadJsonCommand { get; }
+        public DelegateCommandAsync LoadJsonCommand { get; }
+
+
+        //public async void LoadQuizesFromJsonAsync(object? arg)
+        public async Task LoadQuizesFromJsonAsync(object? arg)
         {
             string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
             string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
@@ -406,7 +416,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     return;
                 }
 
-                string json = File.ReadAllText(filePath);
+                //string json =     File.ReadAllText     (filePath);
+                string json = await File.ReadAllTextAsync(filePath);
                 var loadedPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(json, _options);
 
                 if(loadedPacks != null && loadedPacks.Any())

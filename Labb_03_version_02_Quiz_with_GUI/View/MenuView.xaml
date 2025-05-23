@@ -47,6 +47,7 @@
                     />-->
 
                 <MenuItem Header="E_xit" 
+                          InputGestureText="Ctrl + X"
                           Command="{Binding ExitCommand}"
                           />
             </MenuItem>
