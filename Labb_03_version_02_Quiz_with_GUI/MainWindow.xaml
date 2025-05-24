@@ -19,6 +19,7 @@
         <KeyBinding Key="X" Modifiers="Ctrl" Command="{Binding ExitCommand}"/>
         <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{Binding ConfigurationViewModel.AddQuestionCommand}"/>
         <KeyBinding Key="D" Modifiers="Ctrl+Shift" Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"/>
+        <KeyBinding Key="C" Modifiers="Ctrl+Shift" Command="{Binding OpenActivePackConfigurationCommand}"/>
     </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>

@@ -354,8 +354,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         {
             string json = JsonSerializer.Serialize(this.Packs, _options);
 
-            string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
-            string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
+            //string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
+            //string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
+            string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string jsonFolder = Path.Combine(appDataFolder, "Labb03_QuizApp");
+
+
 
             Directory.CreateDirectory(jsonFolder);
 
@@ -398,8 +402,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         //public async void LoadQuizesFromJsonAsync(object? arg)
         public async Task LoadQuizesFromJsonAsync(object? arg)
         {
-            string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
-            string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
+            //string projectFolder = AppDomain.CurrentDomain.BaseDirectory;
+            //string jsonFolder = Path.Combine(projectFolder, "JsonSaves");
+            string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string jsonFolder = Path.Combine(appDataFolder, "Labb03_QuizApp");
+
             string fileName = "UserQuizes.json";
             string filePath = Path.Combine(jsonFolder, fileName);
 

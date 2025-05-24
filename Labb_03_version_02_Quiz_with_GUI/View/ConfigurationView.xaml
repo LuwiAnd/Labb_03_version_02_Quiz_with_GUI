@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Labb_03_version_02_Quiz_with_GUI.View"
+             xmlns:local="clr-namespace:Labb_03_version_02_Quiz_with_GUI.View" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+
              DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+             <!--xmlns:fa="http://schemas.fontawesome.com/icons/"-->
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid ShowGridLines="True">
@@ -55,7 +58,7 @@
                     FontWeight="ExtraBold"
                 />
 
-                <StackPanel Grid.Column="1"
+                <!--<StackPanel Grid.Column="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
                     <Button 
@@ -73,8 +76,51 @@
                         Content="Add Question"
                         Command="{Binding AddQuestionCommand}"
                         />
+                </StackPanel>-->
+
+                <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,10,0"
+                    >   
+                    <Button 
+                        Command="{Binding OpenActivePackConfigurationCommand}"
+                        Margin="5"
+                        ToolTip="Configure Pack"
+                        Content="{fa:Icon Cog}"
+                        Width="32" 
+                        Height="32"
+                        >
+                        <!--<fa:FontAwesome Icon="Cog" Width="24" Height="24" />-->
+
+                    </Button>
+                    <Button 
+                        Command="{Binding RemoveQuestionCommand}"
+                        Margin="5"
+                        ToolTip="Remove Question"
+                        Content="{fa:Icon MinusCircle}"
+                        Width="32" 
+                        Height="32"
+                        >
+                            <!--<fa:Icon Icon="MinusCircle" Width="24" Height="24" />-->
+                    </Button>
+
+                    <Button 
+                        Command="{Binding AddQuestionCommand}"
+                        Margin="5"
+                        ToolTip="Add Question"
+                        Content="{fa:Icon PlusCircle}"
+                        Width="32" 
+                        Height="32"
+                        >
+                            <!--<fa:Icon Icon="PlusCircle" Width="24" Height="24" />-->
+                    </Button>
                 </StackPanel>
+
+
             </Grid>
+            
+            
             <!--<Label
                 Margin="10, 10, 0, 0"
                 Content="{Binding ActivePack.Name}"
