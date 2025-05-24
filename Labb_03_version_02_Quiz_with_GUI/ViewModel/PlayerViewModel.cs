@@ -18,6 +18,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
     public enum QuizState { Asking, ShowingCorrectAnswer };
     public class PlayerViewModel : ViewModelBase
     {
+        public List<Question> QuestionsInRandomOrder { get; set; }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -148,7 +149,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public Question? CurrentQuestion {
             //get => ActivePack.Questions[CurrentQuestionIndex];
-            get => ActivePack.Questions != null && ActivePack.Questions.Count > CurrentQuestionIndex ? ActivePack.Questions[CurrentQuestionIndex] : null;
+            //get => ActivePack.Questions != null && ActivePack.Questions.Count > CurrentQuestionIndex ? ActivePack.Questions[CurrentQuestionIndex] : null;
+            get => QuestionsInRandomOrder != null && QuestionsInRandomOrder.Count > CurrentQuestionIndex ? QuestionsInRandomOrder[CurrentQuestionIndex] : null;
         }
 
         //public string ProgressionString { get => $"Question  {CurrentQuestionIndex + 1}  of  {ActivePack?.Questions.Count}"; }
@@ -257,6 +259,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             ResetButtonColors();
 
+            this.QuestionsInRandomOrder = mainWindowViewModel.ActivePack.Questions.OrderBy(_ => random.Next()).ToList();
+
+
             CurrentQuestionIndex = 0;
             CurrentScore = 0;
 
@@ -348,6 +353,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         private void LoadAnswerOptions()
         {
             //AnswerOptions.Clear();
+
+            if (CurrentQuestion == null) return;
 
             List<AnswerOption> options = new List<AnswerOption>
             {

@@ -17,6 +17,8 @@
         <!--<KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding Path=PlayerViewModel.UpdateButtonCommand}"/>-->
 
         <KeyBinding Key="X" Modifiers="Ctrl" Command="{Binding ExitCommand}"/>
+        <KeyBinding Key="A" Modifiers="Ctrl+Shift" Command="{Binding ConfigurationViewModel.AddQuestionCommand}"/>
+        <KeyBinding Key="D" Modifiers="Ctrl+Shift" Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"/>
     </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
