@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Labb_03_version_02_Quiz_with_GUI.Enums;
+
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {

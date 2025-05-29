@@ -8,6 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Labb_03_version_02_Quiz_with_GUI.Enums;
+
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {

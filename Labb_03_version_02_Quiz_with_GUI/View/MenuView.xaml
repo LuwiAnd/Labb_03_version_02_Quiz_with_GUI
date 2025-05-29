@@ -38,7 +38,13 @@
                                           />
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
-                    </MenuItem>
+                </MenuItem>
+
+                <MenuItem Header="_Import from OpenTriviaDB"
+                          Icon="{fa:Icon CloudDownload}"
+                          InputGestureText="Ctrl + Shift + I"
+                          Command="{Binding OpenImportFromTriviaDbCommand}"
+                          />
 
                 <!--Dessa två val kan användas för testning.-->
                 <!--<MenuItem Header="Save All Question Packs to Disk"

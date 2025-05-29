@@ -215,6 +215,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public DelegateCommand RemoveActivePackCommand { get; }
 
+        public DelegateCommand OpenImportFromTriviaDbCommand { get; }
+
         public MainWindowViewModel()
         {
             ConfigurationViewModel = new ConfigurationViewModel(this);
@@ -315,6 +317,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 canExecute: _ => true
             );
 
+            OpenImportFromTriviaDbCommand = new DelegateCommand(
+                execute: OpenImportFromTriviaDb,
+                canExecute: _ => true
+            );
+
+
             //CurrentView = ConfigurationViewModel;
             ShowConfigurationView =  true;
             ShowPlayerView =  false;
@@ -340,6 +348,17 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             var createQuestionPackWindow = new CreateQuestionPackView(newPackConfiguration);
 
             createQuestionPackWindow.ShowDialog();
+        }
+
+        public void OpenImportFromTriviaDb(object? arg)
+        {
+            var importerViewModel = new ImporterTriviaDbViewModel(this);
+            var importerWindow = new ImporterTriviaDbView(importerViewModel)
+            {
+                DataContext = importerViewModel
+            };
+
+            importerWindow.ShowDialog();
         }
 
 

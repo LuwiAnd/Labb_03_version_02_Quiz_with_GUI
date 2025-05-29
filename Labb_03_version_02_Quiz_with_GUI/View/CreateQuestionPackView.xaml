@@ -29,33 +29,37 @@
         Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
     />
         </StackPanel>
+        
         <StackPanel Grid.Row="1">
             <Label Content="Difficulty"
-       FontWeight="ExtraBold"
-       FontSize="15"
-       Margin="7"
-       />
+                   FontWeight="ExtraBold"
+                   FontSize="15"
+                   Margin="7"
+                   />
+
             <ComboBox Width="350"
-              Margin="0 0 10 0"
-              ItemsSource="{Binding Difficulties}"
-              SelectedIndex="1"
-              />
+                      Margin="0 0 10 0"
+                      ItemsSource="{Binding Difficulties}"
+                      SelectedIndex="1"
+                      />
         </StackPanel>
 
         <StackPanel Grid.Row="2">
             <Label Content="Time limit in seconds per question"
-           FontWeight="ExtraBold"
-           FontSize="15"
-           Margin="12"
-           />
+                   FontWeight="ExtraBold"
+                   FontSize="15"
+                   Margin="12"
+                   />
+
             <Slider Width="350"
-            Minimum="1"
-            Maximum="60"
-            TickFrequency="1"
-            IsSnapToTickEnabled="True"
-            Margin="0 0 10 0"
-            Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            />
+                    Minimum="1"
+                    Maximum="60"
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True"
+                    Margin="0 0 10 0"
+                    Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    />
+            
             <TextBlock Text="{Binding TimeLimitInSeconds}"
                FontWeight="DemiBold"
                FontSize="10"
