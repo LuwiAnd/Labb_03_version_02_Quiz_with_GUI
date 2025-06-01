@@ -10,6 +10,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Labb_03_version_02_Quiz_with_GUI.Enums;
 using Labb_03_version_02_Quiz_with_GUI.Services;
+using System.CodeDom.Compiler;
+using System.Windows;
+using Labb_03_version_02_Quiz_with_GUI.Model;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
@@ -40,8 +43,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             }
         }
 
-        private int? _timeLimitInSeconds = 30;
-        public int? TimeLimitInSeconds
+        private int _timeLimitInSeconds = 30;
+        public int TimeLimitInSeconds
         {
             get => _timeLimitInSeconds;
             set
@@ -73,6 +76,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             {
                 _selectedCategory = value;
                 RaisePropertyChanged();
+                ImportQuestionsCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -99,6 +103,28 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public ObservableCollection<TriviaCategoryDifficultyCount> CategoryCounts { get; } = new();
 
+        public DelegateCommand CloseImporter { get; }
+
+        private int _questionAmount = 10;
+        public int QuestionAmount
+        {
+            get => _questionAmount;
+            set
+            {
+                if (value >= 1 && value <= 999)
+                {
+                    _questionAmount = value;
+                    RaisePropertyChanged();
+                    ImportQuestionsCommand.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+
+
+
+
+
         public ImporterTriviaDbViewModel(MainWindowViewModel mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
@@ -107,12 +133,31 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             //LoadCategoriesCommand.Execute(null); // Flyttar detta anrop till InitializeAsync
 
             ImportQuestionsCommand = new DelegateCommandAsync(
-                async _ => await ImportQuestionsAsync(),
-                _ => SelectedCategory != null
+                //async _ => await ImportQuestionsAsync(),
+                async (window) =>
+                {
+                    await ImportQuestionsAsync();
+
+                    if (window is Window w)
+                    {
+                        w.Close();
+                    }
+                },
+                _ => SelectedCategory != null && QuestionAmount > 0
             );
 
             //await LoadCategoryDifficultyCountsAsync();
             //_ = InitializeAsync(); // Jag flyttar detta till ImporterTriviaDbView.xaml.cs.
+
+            CloseImporter = new DelegateCommand(
+                execute: (window) =>
+                {
+                    if (window is Window w)
+                    {
+                        w.Close();
+                    }
+                });
+
         }
 
         public async Task LoadCategoriesAsync()
@@ -168,15 +213,35 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public async Task ImportQuestionsAsync()
         {
-            if (SelectedCategory == null)
-                return;
+            
 
-            var amount = 10; // Denna måste jag uppdatera senare, eftersom användaren ska kunna välja antal frågor själv!!
-            //var difficulty = "medium";
+            string categoryString = "";
+            if (SelectedCategory != null)
+            {
+                categoryString = $"&category={SelectedCategory.Id}";
+            }
 
             var difficulty = SelectedDifficulty.ToString().ToLower();
+            string difficultyString = "";
+            if (SelectedDifficulty != null)
+            {
+                difficultyString = $"&difficulty={difficulty}";
+            }
+            
+            var amount = QuestionAmount; // Denna måste jag uppdatera senare, eftersom användaren ska kunna välja antal frågor själv!!
+            var maxQuestions = CategoryCounts.FirstOrDefault(c =>
+                c.CategoryId == SelectedCategory?.Id &&
+                c.Difficulty == SelectedDifficulty
+            )?.Count ?? 0;
+            if (amount < 1 || amount > maxQuestions)
+            {
+                MessageBox.Show($"Number of questions must be between 1 and {maxQuestions}.");
+                return;
+            }
 
-            var url = $"https://opentdb.com/api.php?amount={amount}&category={SelectedCategory.Id}&difficulty={difficulty}&type=multiple";
+
+            //var url = $"https://opentdb.com/api.php?amount={amount}&category={SelectedCategory.Id}&difficulty={difficulty}&type=multiple";
+            var url = $"https://opentdb.com/api.php?amount={amount}{categoryString}{difficultyString}&type=multiple";
 
             try
             {
@@ -189,16 +254,63 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
                 if (data?.ResponseCode == 0 && data.Results != null)
                 {
+                    var questionPack = new QuestionPack
+                    {
+                        Name = QuizName ?? "Unnamed Quiz",
+                        Difficulty = SelectedDifficulty,
+                        TimeLimitInSeconds = this.TimeLimitInSeconds
+                    };
+
+
+                    foreach (var q in data.Results)
+                    {
+                        if (q.IncorrectAnswers.Count != 3)
+                            continue;
+
+                        var question = new Question(
+                            query: System.Net.WebUtility.HtmlDecode(q.QuestionText ?? ""),
+                            correctAnswer: System.Net.WebUtility.HtmlDecode(q.CorrectAnswer ?? ""),
+                            incorrectAnswer1: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[0] ?? ""),
+                            incorrectAnswer2: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[1] ?? ""),
+                            incorrectAnswer3: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[2] ?? "")
+                        );
+
+                        questionPack.Questions.Add(question);
+                    }
+
+
+                    if (questionPack.Questions.Count == 0)
+                    {
+                        MessageBox.Show("No questions could be imported.");
+                        return;
+                    }
+
+                    var packViewModel = new QuestionPackViewModel(questionPack);
+                    mainWindowViewModel.Packs.Add(packViewModel);
+                    mainWindowViewModel.ActivePack = packViewModel;
+                    mainWindowViewModel.ActivePack.SelectedQuestion = questionPack.Questions.FirstOrDefault();
+                    mainWindowViewModel.ConfigurationViewModel.HasSelectedQuestion = false;
+                    //mainWindowViewModel.ConfigurationViewModel.HasSelectedQuestion.RaisePropertyChanged(); // Detta fungerade inte.
+                    //mainWindowViewModel.ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasSelectedQuestion)); // Detta bör fungera men används inte pga RaisePropertyChanged används i settern för HasSelectedQuestion.
+                    //mainWindowViewModel.ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasSelectedQuestion)); // Detta bör också fungera.
+
+
+
+
+                    MessageBox.Show($"Quizet '{QuizName}' med {questionPack.Questions.Count} frågor har importerats.");
+
                     Console.WriteLine($"Lyckades importera {data.Results.Count} frågor.");
                 }
                 else
                 {
                     Console.WriteLine("API svarade men kunde inte returnera frågor (t.ex. för få frågor i databasen).");
+                    MessageBox.Show("API responded but could not return questions.");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Fel vid import: {ex.Message}");
+                MessageBox.Show($"Error while importing: {ex.Message}");
             }
         }
 

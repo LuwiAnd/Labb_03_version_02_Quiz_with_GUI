@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Labb_03_version_02_Quiz_with_GUI.Enums;
 
@@ -30,7 +31,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.Model
             Questions = new List<Question>();
         }
 
+        [JsonPropertyName("name")]
         public string Name { get; set; }
+        [JsonPropertyName("difficulty")]
         public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }
         public List<Question> Questions { get; set; }

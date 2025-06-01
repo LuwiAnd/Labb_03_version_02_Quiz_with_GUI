@@ -32,5 +32,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.View
 
             Loaded += async (_, _) => await vm.InitializeAsync();
         }
+
+        private void OnlyAllowDigits(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(char.IsDigit);
+        }
     }
 }

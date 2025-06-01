@@ -239,10 +239,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 // Testfrågor tillagda 2025-01-04.
                 ActivePack.Questions.Add(new Question(
                     query: "Vad vill man svara på frågor?",
-                    correctAnswer: "korrekt svar",
-                    incorrectAnswer1: "inkorr1",
-                    incorrectAnswer2: "inkorr2",
-                    incorrectAnswer3: "inkorr3kt"
+                    correctAnswer: "Korrekt svar",
+                    incorrectAnswer1: "Fel svar 1",
+                    incorrectAnswer2: "Fel svar 2",
+                    incorrectAnswer3: "Fel svar 3"
                 ));
 
                 Packs.Add(ActivePack);

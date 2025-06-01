@@ -19,7 +19,13 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public Question? SelectedQuestion
         {
             get => mainWindowViewModel.SelectedQuestion;
-            set => mainWindowViewModel.SelectedQuestion = value;
+            //set => mainWindowViewModel.SelectedQuestion = value;
+            set
+            {
+                mainWindowViewModel.SelectedQuestion = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(HasSelectedQuestion));
+            }
         }
 
         public DelegateCommand OpenActivePackConfigurationCommand { get => mainWindowViewModel!.OpenActivePackConfigurationCommand; }
