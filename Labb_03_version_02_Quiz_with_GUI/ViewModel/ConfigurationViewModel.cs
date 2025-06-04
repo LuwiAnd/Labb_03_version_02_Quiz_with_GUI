@@ -29,6 +29,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         }
 
         public DelegateCommand OpenActivePackConfigurationCommand { get => mainWindowViewModel!.OpenActivePackConfigurationCommand; }
+        public DelegateCommandAsync SaveJsonCommand { get => mainWindowViewModel!.SaveJsonCommand; }
 
         private ObservableCollection<Question>? _selectedQuestions = new ObservableCollection<Question>();
         public ObservableCollection<Question>? SelectedQuestions

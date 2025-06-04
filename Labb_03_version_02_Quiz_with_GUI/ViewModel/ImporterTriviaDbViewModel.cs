@@ -136,9 +136,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 //async _ => await ImportQuestionsAsync(),
                 async (window) =>
                 {
-                    await ImportQuestionsAsync();
+                    bool importSuccess = await ImportQuestionsAsync();
 
-                    if (window is Window w)
+                    if (window is Window w && importSuccess)
                     {
                         w.Close();
                     }
@@ -211,7 +211,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
 
-        public async Task ImportQuestionsAsync()
+        //public async Task ImportQuestionsAsync()
+        public async Task<bool> ImportQuestionsAsync()
         {
             
 
@@ -236,7 +237,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             if (amount < 1 || amount > maxQuestions)
             {
                 MessageBox.Show($"Number of questions must be between 1 and {maxQuestions}.");
-                return;
+                return false;
             }
 
 
@@ -282,7 +283,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     if (questionPack.Questions.Count == 0)
                     {
                         MessageBox.Show("No questions could be imported.");
-                        return;
+                        return false;
                     }
 
                     var packViewModel = new QuestionPackViewModel(questionPack);
@@ -295,23 +296,28 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     //mainWindowViewModel.ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasSelectedQuestion)); // Detta bör också fungera.
 
 
+                    mainWindowViewModel.SaveJsonCommand.Execute(null);
 
-
-                    MessageBox.Show($"Quizet '{QuizName}' med {questionPack.Questions.Count} frågor har importerats.");
+                    MessageBox.Show($"Quiz '{QuizName}' with {questionPack.Questions.Count} questions have been imported.");
 
                     Console.WriteLine($"Lyckades importera {data.Results.Count} frågor.");
+
+                    return true;
                 }
                 else
                 {
                     Console.WriteLine("API svarade men kunde inte returnera frågor (t.ex. för få frågor i databasen).");
                     MessageBox.Show("API responded but could not return questions.");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Fel vid import: {ex.Message}");
                 MessageBox.Show($"Error while importing: {ex.Message}");
+                return false;
             }
+
         }
 
 

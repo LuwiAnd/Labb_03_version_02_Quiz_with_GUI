@@ -77,8 +77,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
 
                 PlayerViewModel.RaisePropertyChanged();
-                
-                
+
+                OpenActivePackConfigurationCommand.RaiseCanExecuteChanged();
+                SelectPackCommand.RaiseCanExecuteChanged();
+                OpenImportFromTriviaDbCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -294,7 +296,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             OpenCreateNewQuestionPackCommand = new DelegateCommand(
                 execute: OpenCreateNewQuestionPack,
-                canExecute: _ => true
+                canExecute: _ => ShowConfigurationView
             );
 
             SelectPackCommand = new DelegateCommand(
@@ -305,7 +307,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                         ActivePack = pack;
                     }
                 },
-                canExecute: param => param is QuestionPackViewModel
+                canExecute: param => param is QuestionPackViewModel && ShowConfigurationView
             );
 
             //SaveJsonCommand = new DelegateCommand(
@@ -331,7 +333,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             OpenImportFromTriviaDbCommand = new DelegateCommand(
                 execute: OpenImportFromTriviaDb,
-                canExecute: _ => true
+                canExecute: _ => ShowConfigurationView
             );
 
 
