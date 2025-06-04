@@ -68,6 +68,17 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged();
                 SwitchToConfigurationViewCommand.RaiseCanExecuteChanged();
                 SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
+
+                OpenActivePackConfigurationCommand.RaiseCanExecuteChanged();
+                OpenCreateNewQuestionPackCommand.RaiseCanExecuteChanged();
+                OpenImportFromTriviaDbCommand.RaiseCanExecuteChanged();
+                RemoveActivePackCommand.RaiseCanExecuteChanged();
+                ConfigurationViewModel.RemoveQuestionCommand.RaiseCanExecuteChanged();
+                ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
+
+                PlayerViewModel.RaisePropertyChanged();
+                
+                
             }
         }
 
@@ -231,27 +242,28 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             LoadJsonCommand.Execute(null);
 
-            if(ActivePack == null)
-            {
-                // Lektion 112. 26 minuter.
-                ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
+            //if(ActivePack == null)
+            //{
+            //    // Lektion 112. 26 minuter.
+            //    ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
 
-                // Testfrågor tillagda 2025-01-04.
-                ActivePack.Questions.Add(new Question(
-                    query: "Vad vill man svara på frågor?",
-                    correctAnswer: "Korrekt svar",
-                    incorrectAnswer1: "Fel svar 1",
-                    incorrectAnswer2: "Fel svar 2",
-                    incorrectAnswer3: "Fel svar 3"
-                ));
+            //    // Testfrågor tillagda 2025-01-04.
+            //    ActivePack.Questions.Add(new Question(
+            //        query: "Vad vill man svara på frågor?",
+            //        correctAnswer: "Korrekt svar",
+            //        incorrectAnswer1: "Fel svar 1",
+            //        incorrectAnswer2: "Fel svar 2",
+            //        incorrectAnswer3: "Fel svar 3"
+            //    ));
 
-                Packs.Add(ActivePack);
-            }
+            //    Packs.Add(ActivePack);
+            //}
             
 
             
 
-            SelectedQuestion = ActivePack.Questions.FirstOrDefault();
+            //SelectedQuestion = ActivePack.Questions.FirstOrDefault();
+            SelectedQuestion = null;
 
             
             
@@ -276,7 +288,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             OpenActivePackConfigurationCommand = new DelegateCommand(
                 execute: OpenActivePackConfiguration,
-                canExecute: _ => HasActivePack
+                canExecute: _ => HasActivePack && ShowConfigurationView
             );
             //UpdateActivePackCommand = new DelegateCommand(...)
 
@@ -304,7 +316,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             RemoveActivePackCommand = new DelegateCommand(
                 execute: RemoveActivePack,
-                canExecute: _ => ActivePack != null
+                canExecute: _ => ActivePack != null && !ShowPlayerView
             );
 
             ToggleFullScreenCommand = new DelegateCommand(
@@ -456,6 +468,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     }
 
                     ActivePack = Packs.LastOrDefault();
+                    if(ActivePack.Questions.Count > 0)
+                    {
+                        SelectedQuestion = ActivePack.Questions.FirstOrDefault();
+                    }
 
                     MessageBox.Show(
                         $"Quizes loaded successfully from:\n{filePath}",

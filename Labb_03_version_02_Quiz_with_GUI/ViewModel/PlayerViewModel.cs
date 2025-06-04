@@ -26,7 +26,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             //this.quizCompletedViewModel = new QuizCompletedViewModel(this);
 
             //CurrentQuestionIndex = 0;
-            SecondsRemainingToAnswer = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
+            
+            //Denna kodrad ska inte köras här, för ActivePack kan vara null när denna
+            //konstruktor anropas i MainWindowViewModel.cs.
+            //SecondsRemainingToAnswer = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
+
             StartQuizCommand = new DelegateCommand(execute: StartQuiz, canExecute: CanStartQuiz);
 
             //TestData = "Start valuee: ";

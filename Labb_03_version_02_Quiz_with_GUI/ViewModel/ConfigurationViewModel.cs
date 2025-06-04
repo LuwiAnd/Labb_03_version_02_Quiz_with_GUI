@@ -18,8 +18,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public Question? SelectedQuestion
         {
-            get => mainWindowViewModel.SelectedQuestion;
-            //set => mainWindowViewModel.SelectedQuestion = value;
+            get => mainWindowViewModel?.SelectedQuestion;
+            
             set
             {
                 mainWindowViewModel.SelectedQuestion = value;
@@ -83,7 +83,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         // DelegateCommand för att ta bort en fråga.
         private bool CanRemoveQuestion(object? arg)
         {
-            return mainWindowViewModel.SelectedQuestion != null;
+            //return mainWindowViewModel.SelectedQuestion != null;
+            return mainWindowViewModel.SelectedQuestion != null && mainWindowViewModel.ShowConfigurationView;
         }
         /*
         private bool CanRemoveQuestions(object? arg)
@@ -129,7 +130,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         // anledning senare.
         private bool CanAddQuestion(object? arg)
         {
-            return true;
+            //return true;
+            return mainWindowViewModel.ShowConfigurationView;
         }
 
         private void AddQuestion(object arg)
