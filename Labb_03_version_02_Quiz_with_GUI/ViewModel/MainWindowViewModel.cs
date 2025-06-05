@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.IO;
 using System.Windows;
+using System.Net.Http;
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
@@ -364,8 +365,20 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             createQuestionPackWindow.ShowDialog();
         }
 
-        public void OpenImportFromTriviaDb(object? arg)
+        public async void OpenImportFromTriviaDb(object? arg)
         {
+            if(!await HasConnectionAsync())
+            {
+                MessageBox.Show(
+                    "Either TriviaDB is down or there is no internet connection.",
+                    "Connection error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                return;
+            }
+
             var importerViewModel = new ImporterTriviaDbViewModel(this);
             var importerWindow = new ImporterTriviaDbView(importerViewModel)
             {
@@ -542,5 +555,25 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             SaveJsonCommand.Execute(null);
             Application.Current.Shutdown();
         }
+
+
+        // Denna funktion kollar om det går att anropa https://opentdb.com
+        // om det inte går beror det antingen på att användaren inte har 
+        // internet eller på att sidan är nere.
+        private async Task<bool> HasConnectionAsync()
+        {
+            try
+            {
+                using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(5);
+                using var response = await client.GetAsync("https://opentdb.com/api_category.php");
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }

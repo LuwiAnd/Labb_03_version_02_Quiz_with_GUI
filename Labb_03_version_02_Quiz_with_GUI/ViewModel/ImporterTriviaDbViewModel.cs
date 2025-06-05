@@ -253,63 +253,89 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var data = await JsonSerializer.DeserializeAsync<TriviaQuestionListResponseDto>(stream, options);
 
-                if (data?.ResponseCode == 0 && data.Results != null)
+                // Jag använder inte Token, så jag behöver inte oroa mig för de fallen
+                // egentligen. Jag har dock med de fallen ifall jag uppdaterar mitt program
+                // i framtiden eller om TriviaDB ändras så att man måste ha en Token.
+                // 
+                // Man bör inte heller kunna försöka importera för många frågor, eftersom 
+                // jag redan har en egen spärr mot det.
+                switch (data?.ResponseCode)
                 {
-                    var questionPack = new QuestionPack
-                    {
-                        Name = QuizName ?? "Unnamed Quiz",
-                        Difficulty = SelectedDifficulty,
-                        TimeLimitInSeconds = this.TimeLimitInSeconds
-                    };
-
-
-                    foreach (var q in data.Results)
-                    {
-                        if (q.IncorrectAnswers.Count != 3)
-                            continue;
-
-                        var question = new Question(
-                            query: System.Net.WebUtility.HtmlDecode(q.QuestionText ?? ""),
-                            correctAnswer: System.Net.WebUtility.HtmlDecode(q.CorrectAnswer ?? ""),
-                            incorrectAnswer1: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[0] ?? ""),
-                            incorrectAnswer2: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[1] ?? ""),
-                            incorrectAnswer3: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[2] ?? "")
-                        );
-
-                        questionPack.Questions.Add(question);
-                    }
-
-
-                    if (questionPack.Questions.Count == 0)
-                    {
-                        MessageBox.Show("No questions could be imported.");
+                    case 0:
+                        break;
+                    case 1:
+                        MessageBox.Show("No results: The API doesn't have enough questions for your query.");
                         return false;
-                    }
-
-                    var packViewModel = new QuestionPackViewModel(questionPack);
-                    mainWindowViewModel.Packs.Add(packViewModel);
-                    mainWindowViewModel.ActivePack = packViewModel;
-                    mainWindowViewModel.ActivePack.SelectedQuestion = questionPack.Questions.FirstOrDefault();
-                    mainWindowViewModel.ConfigurationViewModel.HasSelectedQuestion = false;
-                    //mainWindowViewModel.ConfigurationViewModel.HasSelectedQuestion.RaisePropertyChanged(); // Detta fungerade inte.
-                    //mainWindowViewModel.ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasSelectedQuestion)); // Detta bör fungera men används inte pga RaisePropertyChanged används i settern för HasSelectedQuestion.
-                    //mainWindowViewModel.ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasSelectedQuestion)); // Detta bör också fungera.
-
-
-                    mainWindowViewModel.SaveJsonCommand.Execute(null);
-
-                    MessageBox.Show($"Quiz '{QuizName}' with {questionPack.Questions.Count} questions have been imported.");
-
-                    Console.WriteLine($"Lyckades importera {data.Results.Count} frågor.");
-
-                    return true;
+                    case 2:
+                        MessageBox.Show("Invalid parameter: Check amount, category, or difficulty.");
+                        return false;
+                    case 3:
+                        MessageBox.Show("Token not found: Session token is missing or invalid.");
+                        return false;
+                    case 4:
+                        MessageBox.Show("Token empty: All questions for this token have been exhausted.");
+                        return false;
+                    case 5:
+                        MessageBox.Show("Rate limit: Too many requests. Wait a few seconds and try again.");
+                        return false;
+                    default:
+                        MessageBox.Show($"Unknown response code: {data?.ResponseCode}");
+                        return false;
                 }
-                else
+
+                if (data.Results == null || !data.Results.Any())
                 {
-                    Console.WriteLine("API svarade men kunde inte returnera frågor (t.ex. för få frågor i databasen).");
-                    MessageBox.Show("API responded but could not return questions.");
+                    MessageBox.Show("No questions were returned from the API.");
                     return false;
                 }
+
+                var questionPack = new QuestionPack
+                {
+                    Name = QuizName ?? "Unnamed Quiz",
+                    Difficulty = SelectedDifficulty,
+                    TimeLimitInSeconds = this.TimeLimitInSeconds
+                };
+
+                foreach (var q in data.Results)
+                {
+                    if (q.IncorrectAnswers.Count != 3)
+                        continue;
+
+                    var question = new Question(
+                        query: System.Net.WebUtility.HtmlDecode(q.QuestionText ?? ""),
+                        correctAnswer: System.Net.WebUtility.HtmlDecode(q.CorrectAnswer ?? ""),
+                        incorrectAnswer1: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[0] ?? ""),
+                        incorrectAnswer2: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[1] ?? ""),
+                        incorrectAnswer3: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[2] ?? "")
+                    );
+
+                    questionPack.Questions.Add(question);
+                }
+
+
+                if (questionPack.Questions.Count == 0)
+                {
+                    MessageBox.Show("No valid questions could be imported.");
+                    return false;
+                }
+
+
+                var packViewModel = new QuestionPackViewModel(questionPack);
+                mainWindowViewModel.Packs.Add(packViewModel);
+                mainWindowViewModel.ActivePack = packViewModel;
+                mainWindowViewModel.ActivePack.SelectedQuestion = questionPack.Questions.FirstOrDefault();
+                mainWindowViewModel.ConfigurationViewModel.HasSelectedQuestion = false;
+
+                //    //mainWindowViewModel.ConfigurationViewModel.HasSelectedQuestion.RaisePropertyChanged(); // Detta fungerade inte.
+                //    //mainWindowViewModel.ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasSelectedQuestion)); // Detta bör fungera men används inte pga RaisePropertyChanged används i settern för HasSelectedQuestion.
+
+
+                mainWindowViewModel.SaveJsonCommand.Execute(null);
+
+                Console.WriteLine($"Lyckades importera {data.Results.Count} frågor.");
+                MessageBox.Show($"Quiz '{QuizName}' with {questionPack.Questions.Count} questions imported.");
+                return true;
+
             }
             catch (Exception ex)
             {
