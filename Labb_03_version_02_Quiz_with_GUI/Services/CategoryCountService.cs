@@ -11,6 +11,7 @@ using Labb_03_version_02_Quiz_with_GUI.Dto;
 using Labb_03_version_02_Quiz_with_GUI.Model;
 using Labb_03_version_02_Quiz_with_GUI.Enums;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace Labb_03_version_02_Quiz_with_GUI.Services
 {
@@ -38,12 +39,56 @@ namespace Labb_03_version_02_Quiz_with_GUI.Services
                         result.Add(new TriviaCategoryDifficultyCount(category.Id, Difficulty.Medium, count.Medium));
                         result.Add(new TriviaCategoryDifficultyCount(category.Id, Difficulty.Hard, count.Hard));
                     }
+
+                    
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error fetching count for category {category.Id}: {ex.Message}");
+                    MessageBox.Show($"Error fetching count for category {category.Id}: {ex.Message}");
+                    Console.WriteLine($"Fel vid hämtning av antal för kategori {category.Id}: {ex.Message}");
                 }
             }
+
+
+            result.Add(
+                        new TriviaCategoryDifficultyCount(
+                            0,
+                            null,
+                            result
+                                .Where(_ => true) // För att det ska vara lättare att jämföra med nedanstående kod.
+                                .Sum(r => r.Count)
+                        )
+                    );
+
+            result.Add(
+                new TriviaCategoryDifficultyCount(
+                    0,
+                    Difficulty.Easy,
+                    result
+                        .Where(r => r.Difficulty == Difficulty.Easy)
+                        .Sum(r => r.Count)
+                )
+            );
+
+            result.Add(
+                new TriviaCategoryDifficultyCount(
+                    0,
+                    Difficulty.Medium,
+                    result
+                        .Where(r => r.Difficulty == Difficulty.Medium)
+                        .Sum(r => r.Count)
+                )
+            );
+
+            result.Add(
+                new TriviaCategoryDifficultyCount(
+                    0,
+                    Difficulty.Hard,
+                    result
+                        .Where(r => r.Difficulty == Difficulty.Hard)
+                        .Sum(r => r.Count)
+                )
+            );
 
             return result;
         }

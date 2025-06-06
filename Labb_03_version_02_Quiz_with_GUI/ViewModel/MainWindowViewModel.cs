@@ -568,6 +568,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 client.Timeout = TimeSpan.FromSeconds(5);
                 using var response = await client.GetAsync("https://opentdb.com/api_category.php");
                 return response.IsSuccessStatusCode;
+
+                // Denna används av Windows för att testa om det finns internet.
+                //var response = await client.GetAsync("http://www.msftconnecttest.com/connecttest.txt");
+                //var content = await response.Content.ReadAsStringAsync();
+                //return response.IsSuccessStatusCode && content == "Microsoft Connect Test";
             }
             catch
             {

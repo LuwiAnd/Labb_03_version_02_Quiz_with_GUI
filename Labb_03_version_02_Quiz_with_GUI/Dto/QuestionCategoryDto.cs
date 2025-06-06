@@ -52,7 +52,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.Dto
             get
             {
                 var count = CountFromViewModel?.Invoke(this.Id) ?? 0;
-                return $"{Name} ({count} frågor)";
+                return $"{Name} ({count} questions)";
             }
         }
     }

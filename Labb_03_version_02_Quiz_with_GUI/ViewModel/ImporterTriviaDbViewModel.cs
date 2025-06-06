@@ -98,6 +98,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     //RaisePropertyChanged(nameof(cat.DisplayNameWithCount));
                     cat.CountFromViewModel = GetCountForCategory;
                 }
+
+                
             }
         }
 
@@ -162,6 +164,10 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public async Task LoadCategoriesAsync()
         {
+
+            Categories?.Clear();
+
+
             var url = "https://opentdb.com/api_category.php";
 
             //using var client = new HttpClient();
@@ -182,18 +188,24 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 {
                     var stream = await response.Content.ReadAsStreamAsync();
                     var data = await JsonSerializer.DeserializeAsync<CategoryListResponseDto>(stream);
-                    Categories.Clear();
+                    //Categories.Clear();
                     foreach (var cat in data?.TriviaCategories ?? new List<QuestionCategoryDto>())
                     {
                         cat.CountFromViewModel = GetCountForCategory;
-                        Categories.Add(cat);
+                        Categories?.Add(cat);
                     }
                 }
             }
             catch(Exception ex)
             {
+                MessageBox.Show($"Unable to fetch categories. Error message: {ex.Message}.");
                 Console.WriteLine($"Det gick inte att hämta kategorier. Felmeddelande: {ex.Message}");
             }
+
+            //if (Categories != null && Categories.Any())
+            //{
+            //    SelectedCategory = Categories.First();
+            //}
 
         }
 
@@ -217,11 +229,13 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             
 
             string categoryString = "";
-            if (SelectedCategory != null)
+            if (SelectedCategory != null && SelectedCategory.Id != 0) // Id == 0 för min egen kategori "Mixed categories".
             {
                 categoryString = $"&category={SelectedCategory.Id}";
             }
 
+            // Jag funderar på att ha blandade svårighetsgrader i framtiden, så därför har
+            // jag redan nu en if-sats som kollar om den är null.
             var difficulty = SelectedDifficulty.ToString().ToLower();
             string difficultyString = "";
             if (SelectedDifficulty != null)
@@ -229,7 +243,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 difficultyString = $"&difficulty={difficulty}";
             }
             
-            var amount = QuestionAmount; // Denna måste jag uppdatera senare, eftersom användaren ska kunna välja antal frågor själv!!
+            var amount = QuestionAmount;
             var maxQuestions = CategoryCounts.FirstOrDefault(c =>
                 c.CategoryId == SelectedCategory?.Id &&
                 c.Difficulty == SelectedDifficulty
@@ -369,6 +383,20 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             {
                 cat.RaisePropertyChanged(nameof(QuestionCategoryDto.DisplayNameWithCount));
             }
+
+            // Kod för att skapa mitt förvalda "Mixed Categories", alltså alla frågekategorier.
+            var mixedCategory = new QuestionCategoryDto
+            {
+                Id = 0, 
+                Name = "Mixed categories",
+                CountFromViewModel = _ => CategoryCounts
+                    .FirstOrDefault(c => c.CategoryId == 0 && c.Difficulty == SelectedDifficulty)
+                    ?.Count ?? 0
+            };
+
+
+            Categories.Insert(0, mixedCategory);
+            SelectedCategory ??= mixedCategory;
         }
 
         public async Task InitializeAsync()
@@ -377,6 +405,33 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             await LoadCategoryDifficultyCountsAsync();
             Console.WriteLine($"test {Categories}"); // Denna kodrad var bara för att kunna hovra över {Categories} vid debugging.
         }
+
+
+        //private async Task<int?> FetchTotalQuestionCountAsync()
+        //{
+        //    try
+        //    {
+        //        var response = await _httpClient.GetAsync("https://opentdb.com/api_count_global.php");
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var stream = await response.Content.ReadAsStreamAsync();
+        //            var json = await JsonSerializer.DeserializeAsync<JsonElement>(stream);
+
+        //            if (json.TryGetProperty("overall", out var overall) &&
+        //                overall.TryGetProperty("total_num_of_verified_questions", out var total))
+        //            {
+        //                return total.GetInt32();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Kunde inte hämta global frågecount: {ex.Message}");
+        //    }
+
+        //    return null;
+        //}
 
 
     }
