@@ -31,11 +31,21 @@
                         >
                         <!--VerticalAlignment="Center"-->
 
-                <Label FontSize="40"
+                <!--<Label FontSize="40"
                    FontWeight="DemiBold"
                    HorizontalAlignment="Center"
                    Content="{Binding CurrentQuestion.Query}"
-                   />
+                   />-->
+
+                <TextBlock FontSize="20"
+                           FontWeight="DemiBold"
+                           Text="{Binding CurrentQuestion.Query}"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Margin="20"
+                           />
 
 
 
