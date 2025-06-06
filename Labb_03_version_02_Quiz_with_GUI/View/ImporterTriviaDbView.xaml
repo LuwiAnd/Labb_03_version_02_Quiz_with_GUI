@@ -26,16 +26,17 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
-            <Label Content="Name"
+            <Label Content="Quiz Name"
                     FontWeight="ExtraBold"
                     FontSize="15"
-                    Margin="7"
+                    Margin="0 0 0 7"
                     />
 
-            <!--<TextBlock Text="Name your imported quiz" Margin="0,0,0,5"/>-->
             <TextBox 
                 Text="{Binding QuizName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                Margin="0,0,0,10"
+                Margin="5 0 0 10"
+                Width="335"
+                HorizontalAlignment="Left"
                 />
         </StackPanel>
 
@@ -44,13 +45,17 @@
             <Label Content="Choose question category"
                 FontWeight="ExtraBold"
                 FontSize="15"
-                Margin="7"
+                Margin="0 15 0 7"
+                HorizontalAlignment="Left"
                 />
 
             <ComboBox ItemsSource="{Binding Categories}"
                       SelectedItem="{Binding SelectedCategory}"
                       DisplayMemberPath="DisplayNameWithCount"
-                      Margin="0,0,0,10"/>
+                      Margin="5 0 0 0"
+                      Width="335"
+                      HorizontalAlignment="Left"
+                      />
             <!--DisplayMemberPath="Name"-->
         </StackPanel>
 
@@ -59,13 +64,14 @@
             <Label Content="Difficulty"
                    FontWeight="ExtraBold"
                    FontSize="15"
-                   Margin="7"
-                   HorizontalAlignment="Center"
+                   Margin="0 0 0 7"
+                   HorizontalAlignment="Left"
                     />
             <ComboBox ItemsSource="{Binding Difficulties}"
                       SelectedItem="{Binding SelectedDifficulty}"
-                      Margin="0,0,0,10"
+                      Margin="5 0 0 10"
                       Width="150"
+                      HorizontalAlignment="Left"
                       >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -79,22 +85,23 @@
             <Label Content="Time limit in seconds per question"
                    FontWeight="ExtraBold"
                    FontSize="15"
-                   Margin="12"
-                   HorizontalAlignment="Center"
+                   Margin="5 0 0 12"
+                   HorizontalAlignment="Left"
                    />
 
-            <Slider Width="330"
+            <Slider Width="340"
                     Minimum="1"
                     Maximum="60"
                     TickFrequency="1"
                     IsSnapToTickEnabled="True"
-                    Margin="0 0 10 0"
+                    Margin="5 0 0 0"
+                    HorizontalAlignment="Left"
                     Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     />
 
             <TextBlock Text="{Binding TimeLimitInSeconds}"
                        FontWeight="DemiBold"
-                       FontSize="10"
+                       FontSize="12"
                        HorizontalAlignment="Center"
                        Margin="0 10 0 0"
                        />
@@ -103,13 +110,20 @@
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal"
                     >
-            
-            <Label Content="Number of questions:"/>
+
+            <Label Content="Number of questions:"
+                   FontWeight="ExtraBold"
+                   FontSize="15"
+                   Margin="5 0"
+                   HorizontalAlignment="Center"
+                   />
 
             <TextBox x:Name="inputQuestionQuantity"
                      Width="60"
+                     Margin="10 0 0 0"
                      Text="{Binding QuestionAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
                      MaxLength="3"
                      PreviewTextInput="OnlyAllowDigits"
                      />
