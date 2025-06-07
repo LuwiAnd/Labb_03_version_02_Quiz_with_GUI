@@ -17,6 +17,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        // if debugMode is true then windows will pop-up when quizes are loaded from or saved to a JSON-file.
+        private readonly bool debugMode = false;
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
 
         public ConfigurationViewModel ConfigurationViewModel{ get; }
@@ -120,7 +122,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     ShowConfigurationView = false;
                     ShowPlayerView = false;
                 }
-                //RaisePropertyChanged();
+                RaisePropertyChanged();
                 QuizCompletedViewModel.RaisePropertyChanged();
                 //SwitchToConfigurationViewCommand.RaiseCanExecuteChanged();
                 //SwitchToPlayerViewCommand.RaiseCanExecuteChanged();
@@ -417,12 +419,16 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 //File.WriteAllText(filePath, json);
                 await File.WriteAllTextAsync(filePath, json);
 
-                MessageBox.Show(
-                    $"Quizes saved successfully to:\n{filePath}",
-                    "Save Successful",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
+                if (debugMode)
+                {
+                    MessageBox.Show(
+                        $"Quizes saved successfully to:\n{filePath}",
+                        "Save Successful",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                }
+                
             }
             catch(Exception ex)
             {
@@ -488,12 +494,16 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                         SelectedQuestion = ActivePack.Questions.FirstOrDefault();
                     }
 
-                    MessageBox.Show(
-                        $"Quizes loaded successfully from:\n{filePath}",
-                        "Load Successful",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
+                    if (debugMode)
+                    {
+                        MessageBox.Show(
+                            $"Quizes loaded successfully from:\n{filePath}",
+                            "Load Successful",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information
+                        );
+                    }
+                    
                 }
                 else
                 {

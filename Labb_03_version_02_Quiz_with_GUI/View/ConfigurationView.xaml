@@ -178,7 +178,8 @@
                 Height="40" 
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
-                Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                MaxLength="150"
                 LostFocus="TextBox_LostFocus"
             />
                 <!--Text="{Binding SelectedQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"--> 
@@ -195,6 +196,7 @@
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
                 Text="{Binding SelectedQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                MaxLength="50"
                 LostFocus="TextBox_LostFocus"
             />
 
@@ -209,7 +211,8 @@
                 Height="20" 
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
-                Text="{Binding SelectedQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding SelectedQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                MaxLength="50"
                 LostFocus="TextBox_LostFocus"
             />
 
@@ -224,7 +227,8 @@
                 Height="20" 
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
-                Text="{Binding SelectedQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding SelectedQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                MaxLength="50"
                 LostFocus="TextBox_LostFocus"
             />
 
@@ -239,7 +243,8 @@
                 Height="20" 
                 HorizontalAlignment="Left" 
                 Margin="10, 0, 10, 0"
-                Text="{Binding SelectedQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Text="{Binding SelectedQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                MaxLength="50"
                 LostFocus="TextBox_LostFocus"
             />
 

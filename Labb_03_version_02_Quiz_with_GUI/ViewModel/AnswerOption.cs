@@ -54,7 +54,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         {
             this.AnswerText = answerText;
             this.IsCorrect = isCorrect;
-            this.BackgroundColor = Brushes.LightGray;
+            //this.BackgroundColor = Brushes.LightGray;
+            this.BackgroundColor = Brushes.Black;
         }
     }
 }

@@ -315,12 +315,55 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                     if (q.IncorrectAnswers.Count != 3)
                         continue;
 
+
+                    string decodedQuestion = System.Net.WebUtility.HtmlDecode(q.QuestionText ?? "");
+                    string decodedCorrect = System.Net.WebUtility.HtmlDecode(q.CorrectAnswer ?? "");
+                    string decodedIncorrect1 = System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[0] ?? "");
+                    string decodedIncorrect2 = System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[1] ?? "");
+                    string decodedIncorrect3 = System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[2] ?? "");
+
+                    if (
+                        decodedQuestion.Length > 150 ||
+                        decodedCorrect.Length > 50 ||
+                        decodedIncorrect1.Length > 50 ||
+                        decodedIncorrect2.Length > 50 ||
+                        decodedIncorrect3.Length > 50
+                        )
+                    {
+                        // Här skulle jag kunna göra en loop som försöker importera en 
+                        // ny fråga att ersätta den fråga som inte uppfyller kriterierna 
+                        // i denna if-sats. Loopen skulle kunna köras ett begränsat antal
+                        // gånger (ifall det inte finns någon mer fråga som uppfyller
+                        // kraven eller för att det inte ska ta för lång tid). Om man
+                        // får en response med en godkänd fråga avbryts loopen och den
+                        // frågan kommer med i importen.
+                        //
+                        // Bättre kanske vore att kolla hur många frågor som inte godkändes 
+                        // när man kört denna funktion (ImportQuestionsAsync) och försöka 
+                        // importera ersättare för alla saknade frågor på en gång.
+                        // 
+                        // Jag tror dock inte att det är så många frågor, om ens några, som
+                        // inte uppfyller kraven.
+                        MessageBox.Show($"The question {decodedQuestion} was removed from the imported questions. Either the question itself was too long or an answer option was too long.");
+                        continue;
+                    }
+
+
+                    //var question = new Question(
+                    //    query: System.Net.WebUtility.HtmlDecode(q.QuestionText ?? ""),
+                    //    correctAnswer: System.Net.WebUtility.HtmlDecode(q.CorrectAnswer ?? ""),
+                    //    incorrectAnswer1: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[0] ?? ""),
+                    //    incorrectAnswer2: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[1] ?? ""),
+                    //    incorrectAnswer3: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[2] ?? "")
+                    //);
+
+
                     var question = new Question(
-                        query: System.Net.WebUtility.HtmlDecode(q.QuestionText ?? ""),
-                        correctAnswer: System.Net.WebUtility.HtmlDecode(q.CorrectAnswer ?? ""),
-                        incorrectAnswer1: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[0] ?? ""),
-                        incorrectAnswer2: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[1] ?? ""),
-                        incorrectAnswer3: System.Net.WebUtility.HtmlDecode(q.IncorrectAnswers[2] ?? "")
+                        query: decodedQuestion,
+                        correctAnswer: decodedCorrect,
+                        incorrectAnswer1: decodedIncorrect1,
+                        incorrectAnswer2: decodedIncorrect2,
+                        incorrectAnswer3: decodedIncorrect3
                     );
 
                     questionPack.Questions.Add(question);

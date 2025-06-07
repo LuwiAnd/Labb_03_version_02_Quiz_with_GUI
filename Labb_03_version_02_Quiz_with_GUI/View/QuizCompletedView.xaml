@@ -26,6 +26,13 @@
             <Button x:Name="buttonRestartQuiz"
                     Content="Restart Quiz"
                     Command="{Binding Path=StartQuizCommand}"
+                    Width="160"
+                    Height="40"
+                    Background="SeaGreen"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="20"
+                    VerticalContentAlignment="Center"
                     />
                     <!--Command="{Binding Path=mainViewModel.SwitchToPlayerViewCommand}"-->
                     <!--Command="{Binding Path=playerViewModel.StartQuizCommand}"-->

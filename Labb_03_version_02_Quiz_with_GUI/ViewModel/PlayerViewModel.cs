@@ -44,7 +44,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             UpdateButtonCommand = new DelegateCommand(UpdateButton, CanUpdateButton);
 
 
-            AnswerCommand = new DelegateCommand(OnScoringQuestion);
+            AnswerCommand = new DelegateCommand(OnScoringQuestion, CanAnswerQuestion);
             QuizState QuizState = QuizState.Asking;
             AnswerOptions = new ObservableCollection<AnswerOption> { 
                 new AnswerOption("", false), 
@@ -62,6 +62,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             {
                 LoadAnswerOptions();
             }
+
+            //UpdateProgressionString();
         }
 
         private AnswerOption _answerOption1;
@@ -96,9 +98,22 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
         private readonly MainWindowViewModel? mainWindowViewModel;
-        private QuizCompletedViewModel quizCompletedViewModel;
-        
-        public QuizState QuizState { get; set; }
+        //private QuizCompletedViewModel quizCompletedViewModel;
+
+        private QuizState _quizState;
+        public QuizState QuizState
+        {
+            get => _quizState;
+            set
+            {
+                if (_quizState != value)
+                {
+                    _quizState = value;
+                    AnswerCommand.RaiseCanExecuteChanged();
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
         public DelegateCommand StartQuizCommand { get; }
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
@@ -157,10 +172,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             get => QuestionsInRandomOrder != null && QuestionsInRandomOrder.Count > CurrentQuestionIndex ? QuestionsInRandomOrder[CurrentQuestionIndex] : null;
         }
 
-        //public string ProgressionString { get => $"Question  {CurrentQuestionIndex + 1}  of  {ActivePack?.Questions.Count}"; }
-        //public string ProgressionString { get; set; }
-        private string _progressionString = "Hejsan";
-        //private string _progressionString = UpdateProgressionString();
+
+        private string _progressionString = "";
         public string ProgressionString
         {
             get => _progressionString;
@@ -168,7 +181,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             {
                 _progressionString = value;
                 RaisePropertyChanged();
-                mainWindowViewModel.QuizCompletedViewModel.RaisePropertyChanged();
+                mainWindowViewModel?.QuizCompletedViewModel.RaisePropertyChanged();
             }
         }
 
@@ -195,11 +208,16 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 questionsAnswered = CurrentQuestionIndex + 1;
             }
 
-            questionNumberString = $"Question  {questionNumber}  of  {totalQuestionNumber}\n ";
+            //questionNumberString = $"Question  {questionNumber}  of  {totalQuestionNumber}\n ";
+            questionNumberString = $"Question  {questionNumber}  of  {totalQuestionNumber}";
             questionScoreString = $"Points: {CurrentScore} of {questionsAnswered}";
 
             
-            ProgressionString = questionNumberString + questionScoreString;
+            //ProgressionString = questionNumberString + questionScoreString;
+            ProgressionString = (mainWindowViewModel.ShowPlayerView) ?
+                questionNumberString :
+                questionScoreString
+                ;
         }
 
         // Lektion 114.
@@ -269,7 +287,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             CurrentQuestionIndex = 0;
             CurrentScore = 0;
 
-            ProgressionString = $"Question  {CurrentQuestionIndex + 1}  of  {mainWindowViewModel.ActivePack?.Questions.Count}\n Points: {CurrentScore} of {CurrentQuestionIndex}";
+            //ProgressionString = $"Question  {CurrentQuestionIndex + 1}  of  {mainWindowViewModel.ActivePack?.Questions.Count}\n Points: {CurrentScore} of {CurrentQuestionIndex}";
+            ProgressionString = $"Question  {CurrentQuestionIndex + 1}  of  {mainWindowViewModel.ActivePack?.Questions.Count}";
 
             StartCurrentQuestion();
         }
@@ -429,6 +448,19 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             QuizState = QuizState.ShowingCorrectAnswer;
             UpdateProgressionString();
         }
+
+        // Jag skulle säkert kunna uppdatera if-satsen i OnScoringQuestion från
+        // if (selectedOption?.IsCorrect ?? false)
+        // till
+        // if (QuizState == QuizState.Asking && selectedOption?.IsCorrect ?? false)
+        // vilket kanske hade varit smidigare.
+        private bool CanAnswerQuestion(object? arg)
+        {
+            return QuizState == QuizState.Asking;
+        }
+
+
+
 
         private void DisplayCorrectAnswerButton()
         {
