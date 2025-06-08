@@ -366,8 +366,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         private const int TotalTimeToDisplayCorrectAnswerInSeconds = 1;
         private int TimeLeftToDisplayCorrectAnswerInSeconds = TotalTimeToDisplayCorrectAnswerInSeconds;
-        private string _selectedAnswer;
-        private int _correctAnswerIndex;
+        //private string _selectedAnswer;
+        //private int _correctAnswerIndex;
         
         public DelegateCommand AnswerCommand { get; }
 

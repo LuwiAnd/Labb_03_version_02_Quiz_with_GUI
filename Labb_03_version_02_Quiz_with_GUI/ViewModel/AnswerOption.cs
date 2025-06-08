@@ -52,10 +52,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public AnswerOption(string answerText, bool isCorrect)
         {
-            this.AnswerText = answerText;
+            //this.AnswerText = answerText ?? "";
+            this._answerText = answerText ?? "";
             this.IsCorrect = isCorrect;
             //this.BackgroundColor = Brushes.LightGray;
-            this.BackgroundColor = Brushes.Black;
+            //this.BackgroundColor = Brushes.Black;
+            this._backgroundColor = Brushes.Black;
         }
     }
 }

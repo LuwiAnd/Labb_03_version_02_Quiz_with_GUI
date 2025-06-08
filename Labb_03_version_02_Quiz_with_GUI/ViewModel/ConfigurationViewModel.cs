@@ -13,6 +13,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
     {
 
         // Ändrade från private till public för att komma åt från code-behind i ConfigurationView.xaml.cs.
+        //public readonly MainWindowViewModel? mainWindowViewModel;
         public readonly MainWindowViewModel? mainWindowViewModel;
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
 
@@ -45,7 +46,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             }
         }
 
-        
+        public bool? HasActivePack
+        {
+            get => mainWindowViewModel?.HasActivePack;
+        }
+
+
         public bool HasSelectedQuestion
         {
             get => mainWindowViewModel.HasSelectedQuestion;
