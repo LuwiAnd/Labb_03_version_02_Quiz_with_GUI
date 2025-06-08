@@ -44,12 +44,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                         return;
                     }
 
-                    if (mainWindowViewModel.ActivePack is not null)
-                    {
-                        //mainWindowViewModel.ActivePack.Name = this.PackName;
-                        //mainWindowViewModel.ActivePack.Difficulty = this.Difficulty;
-                        //mainWindowViewModel.ActivePack.TimeLimitInSeconds = this.TimeLimitInSeconds;
-
+                    //if (mainWindowViewModel.ActivePack is not null)
+                    //{
+                        
                         QuestionPack createdQuestionPack = new QuestionPack(
                             name: this.PackName,
                             difficulty: this.Difficulty,
@@ -60,7 +57,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
                         mainWindowViewModel.Packs.Add(createdQuestionPackViewModel);
                         mainWindowViewModel.ActivePack = mainWindowViewModel.Packs.LastOrDefault();
-                    }
+                    //}
 
                     if (window is Window w)
                     {
