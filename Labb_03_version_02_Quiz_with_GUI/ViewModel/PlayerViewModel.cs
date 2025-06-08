@@ -45,7 +45,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
             AnswerCommand = new DelegateCommand(OnScoringQuestion, CanAnswerQuestion);
-            QuizState QuizState = QuizState.Asking;
+            //QuizState QuizState = QuizState.Asking;
+            _quizState = QuizState.Asking;
+
             AnswerOptions = new ObservableCollection<AnswerOption> { 
                 new AnswerOption("", false), 
                 new AnswerOption("", false), 
