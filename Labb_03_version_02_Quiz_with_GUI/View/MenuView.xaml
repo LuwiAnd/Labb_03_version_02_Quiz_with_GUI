@@ -89,15 +89,15 @@
             </MenuItem>
 
             <MenuItem Header="_View">
-                <MenuItem Header="Play"
+                <MenuItem Header="_Play"
                           Icon="{fa:Icon PlayCircle}"
                           Command="{Binding Path=SwitchToPlayerViewCommand}"
                           />
-                <MenuItem Header="Edit"
+                <MenuItem Header="_Edit"
                           Icon="{fa:Icon Edit}"
                           Command="{Binding Path=SwitchToConfigurationViewCommand}"
                           />
-                <MenuItem Header="Toggle Fullscreen"
+                <MenuItem Header="Toggle _Fullscreen"
                           Icon="{fa:Icon ExpandArrowsAlt}"
                           Command="{Binding ToggleFullScreenCommand}"
                           />
