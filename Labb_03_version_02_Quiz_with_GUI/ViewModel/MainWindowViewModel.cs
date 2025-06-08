@@ -321,7 +321,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
             RemoveActivePackCommand = new DelegateCommand(
                 execute: RemoveActivePack,
-                canExecute: _ => ActivePack != null && !ShowPlayerView
+                canExecute: _ => ActivePack != null && ShowConfigurationView
             );
 
             ToggleFullScreenCommand = new DelegateCommand(
