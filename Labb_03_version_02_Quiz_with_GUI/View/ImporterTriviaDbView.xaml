@@ -37,6 +37,7 @@
                 Margin="5 0 0 10"
                 Width="335"
                 HorizontalAlignment="Left"
+                MaxLength="32"
                 />
         </StackPanel>
 

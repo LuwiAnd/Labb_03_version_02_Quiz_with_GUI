@@ -227,6 +227,13 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public async Task<bool> ImportQuestionsAsync()
         {
             
+            if (string.IsNullOrWhiteSpace(QuizName) || QuizName?.Length > 32)
+            //if (QuizName?.Length > 32)
+            {
+                MessageBox.Show($"Quiz name must be between 1 and 32 characters.");
+                //MessageBox.Show($"Quiz name must be at most 32 characters.");
+                return false;
+            }
 
             string categoryString = "";
             if (SelectedCategory != null && SelectedCategory.Id != 0) // Id == 0 för min egen kategori "Mixed categories".

@@ -22,12 +22,13 @@
            Margin="7"
            />
             <TextBox 
-        Width="350" 
-        Height="50" 
-        HorizontalAlignment="Left" 
-        Margin="12, 0, 10, 0"
-        Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-    />
+                Width="350" 
+                Height="50" 
+                HorizontalAlignment="Left" 
+                Margin="12, 0, 10, 0"
+                Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                MaxLength="32" 
+            />
         </StackPanel>
         
         <StackPanel Grid.Row="1">

@@ -31,8 +31,30 @@ namespace Labb_03_version_02_Quiz_with_GUI.Model
             Questions = new List<Question>();
         }
 
+        //private string _name;
+        //[JsonPropertyName("name")]
+        //public string Name 
+        //{ 
+        //    get => _name;
+        //    set
+        //    {
+        //        if(value.Length > 32)
+        //        {
+        //            throw new ArgumentException("Quiz name cannot be longer than 32 characters.");
+        //        }
+        //        _name = value;
+        //    }
+        //}
+        // 
+        // Ifall quiznamnet skulle vara sparat med för många tecken, så går
+        // det inte att ladda programmet. Det är dock inte så farligt om
+        // quiznamnet skulle vara för långt. Den enda konsekvensen är att 
+        // man inte kan se hela namnet i konfigurationsvyn. Därför tog jag 
+        // bort ovanstående setter med kontrollkod.
         [JsonPropertyName("name")]
         public string Name { get; set; }
+
+
         [JsonPropertyName("difficulty")]
         public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }

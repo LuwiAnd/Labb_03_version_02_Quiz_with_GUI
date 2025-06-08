@@ -38,6 +38,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             SaveActivePackChangesCommand = new DelegateCommand(
                 execute: (window) =>
                 {
+                    if (string.IsNullOrEmpty(this.PackName) || this.PackName.Length > 32 )
+                    {
+                        MessageBox.Show($"Quiz name cannot be more than 32 characters. \nYour name is {this.PackName.Length} characters.");
+                        return;
+                    }
+
                     if (mainWindowViewModel.ActivePack is not null)
                     {
                         //mainWindowViewModel.ActivePack.Name = this.PackName;
@@ -69,7 +75,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         private bool CanCreateActivePack(object? arg)
         {
-            return this.PackName != null && this.Difficulty != null && this.TimeLimitInSeconds != null;
+            return 
+                !string.IsNullOrWhiteSpace(this.PackName)
+                && this.PackName.Length <= 32
+                && this.Difficulty != null 
+                && this.TimeLimitInSeconds != null;
         }
 
         private void CreateActivePack(object obj)

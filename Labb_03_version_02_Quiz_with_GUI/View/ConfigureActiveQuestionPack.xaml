@@ -32,6 +32,7 @@
                 HorizontalAlignment="Left" 
                 Margin="12, 0, 10, 0"
                 Text="{Binding PackName, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
+                MaxLength="32"
             />
         </StackPanel>
         <StackPanel Grid.Row="1">
