@@ -162,6 +162,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
                 // Lektion 112. Alla som gjort en binding kommer få meddelande när denna ändras.
                 RaisePropertyChanged();
+                ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
 
                 // Lektion 114. 46 minuter in. Vi skriver nedanstående rad för att ConfigurationView.cs inte har en egen set-funktion för detta.
                 // Vi behöver troligtvis göra liknande detta på flera ställen när vi gör Labb3!
@@ -178,6 +179,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             set { 
                 _hasActivePack = value;
                 RaisePropertyChanged();
+                ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
             }
         }
 

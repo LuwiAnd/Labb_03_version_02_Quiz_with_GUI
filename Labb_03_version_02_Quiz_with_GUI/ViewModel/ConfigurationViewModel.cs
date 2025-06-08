@@ -132,7 +132,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         private bool CanAddQuestion(object? arg)
         {
             //return true;
-            return mainWindowViewModel.ShowConfigurationView;
+            return mainWindowViewModel.ShowConfigurationView && mainWindowViewModel.ActivePack != null;
         }
 
         private void AddQuestion(object arg)
