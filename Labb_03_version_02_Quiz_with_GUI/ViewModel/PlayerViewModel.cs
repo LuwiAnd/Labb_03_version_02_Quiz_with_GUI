@@ -18,7 +18,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
     public enum QuizState { Asking, ShowingCorrectAnswer };
     public class PlayerViewModel : ViewModelBase
     {
-        public List<Question> QuestionsInRandomOrder { get; set; }
+        public List<Question>? QuestionsInRandomOrder { get; set; }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -56,12 +56,16 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 new AnswerOption("", false)
             };
 
-            AnswerOption1 = new AnswerOption("", false);
-            AnswerOption2 = new AnswerOption("", false);
-            AnswerOption3 = new AnswerOption("", false);
-            AnswerOption4 = new AnswerOption("", false);
+            //AnswerOption1 = new AnswerOption("", false);
+            //AnswerOption2 = new AnswerOption("", false);
+            //AnswerOption3 = new AnswerOption("", false);
+            //AnswerOption4 = new AnswerOption("", false);
+            _answerOption1 = new AnswerOption("", false);
+            _answerOption2 = new AnswerOption("", false);
+            _answerOption3 = new AnswerOption("", false);
+            _answerOption4 = new AnswerOption("", false);
 
-            if(mainWindowViewModel?.ActivePack?.Questions.Any() == true)
+            if (mainWindowViewModel?.ActivePack?.Questions.Any() == true)
             {
                 LoadAnswerOptions();
             }
@@ -257,8 +261,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             get => mainWindowViewModel.ShowQuizCompletedView;
         }
 
-
-        public DelegateCommand UpdateButtonCommand { get; }
+        // Denna kod användes för ett test som jag tagit bort.
+        //public DelegateCommand UpdateButtonCommand { get; }
 
 
         public ObservableCollection<AnswerOption> AnswerOptions { get; }
