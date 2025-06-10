@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Labb_03_version_02_Quiz_with_GUI.Enums;
+using Labb_03_version_02_Quiz_with_GUI.ViewModel;
+using System.IO.Packaging;
 
 
 namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
@@ -17,11 +19,12 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         public CreateQuestionPackViewModel(MainWindowViewModel mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-            CreateActivePackCommand = new DelegateCommand(CreateActivePack, CanCreateActivePack);
+            //CreateActivePackCommand = new DelegateCommand(CreateActivePack, CanCreateActivePack);
             
-                this.PackName = "Name your quiz";
-                this.Difficulty = Difficulty.Medium;
-                this.TimeLimitInSeconds = 30;
+            //this.PackName = "Name your quiz";
+            this._packName = "Name your quiz";
+            this.Difficulty = Difficulty.Medium;
+            this.TimeLimitInSeconds = 30;
             
             this.Difficulties = new List<Difficulty>();
             this.Difficulties.AddRange([Difficulty.Easy, Difficulty.Medium, Difficulty.Hard]);
@@ -36,57 +39,88 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 });
 
             SaveActivePackChangesCommand = new DelegateCommand(
-                execute: (window) =>
-                {
-                    if (string.IsNullOrEmpty(this.PackName) || this.PackName.Length > 32 )
-                    {
-                        MessageBox.Show($"Quiz name cannot be more than 32 characters. \nYour name is {this.PackName.Length} characters.");
-                        return;
-                    }
+                //execute: (window) =>
+                //{
+                //    if (string.IsNullOrEmpty(this.PackName) || this.PackName.Length > 32 )
+                //    {
+                //        MessageBox.Show($"Quiz name cannot be more than 32 characters. \nYour name is {this.PackName.Length} characters.");
+                //        return;
+                //    }
 
-                    //if (mainWindowViewModel.ActivePack is not null)
-                    //{
+                //    //if (mainWindowViewModel.ActivePack is not null)
+                //    //{
                         
-                        QuestionPack createdQuestionPack = new QuestionPack(
-                            name: this.PackName,
-                            difficulty: this.Difficulty,
-                            timeLimitInSeconds: this.TimeLimitInSeconds
-                        );
+                //        QuestionPack createdQuestionPack = new QuestionPack(
+                //            name: this.PackName,
+                //            difficulty: this.Difficulty,
+                //            timeLimitInSeconds: this.TimeLimitInSeconds
+                //        );
 
-                        QuestionPackViewModel createdQuestionPackViewModel = new QuestionPackViewModel(createdQuestionPack);
+                //        QuestionPackViewModel createdQuestionPackViewModel = new QuestionPackViewModel(createdQuestionPack);
 
-                        mainWindowViewModel.Packs.Add(createdQuestionPackViewModel);
-                        mainWindowViewModel.ActivePack = mainWindowViewModel.Packs.LastOrDefault();
-                    //}
+                //        mainWindowViewModel.Packs.Add(createdQuestionPackViewModel);
+                //        mainWindowViewModel.ActivePack = mainWindowViewModel.Packs.LastOrDefault();
+                //    //}
 
-                    if (window is Window w)
-                    {
-                        w.Close();
-                    }
+                //    if (window is Window w)
+                //    {
+                //        w.Close();
+                //    }
 
-                    mainWindowViewModel.SaveJsonCommand.Execute(null);
-                }
+                //    mainWindowViewModel.SaveJsonCommand.Execute(null);
+                //}
+                execute: SaveActivePack
+            );
+        }
+
+        // Jag bröt ut nedanstående funktion ur SaveActivePackChangesCommand för
+        // att debugga.
+        private void SaveActivePack(object? window)
+        {
+            if (string.IsNullOrEmpty(this.PackName) || this.PackName.Length > 32 )
+            {
+                MessageBox.Show($"Quiz name cannot be more than 32 characters. \nYour name is {this.PackName.Length} characters.");
+                return;
+            }
+
+    
+
+            QuestionPack createdQuestionPack = new QuestionPack(
+                name: this.PackName,
+                difficulty: this.Difficulty,
+                timeLimitInSeconds: this.TimeLimitInSeconds
             );
 
+            QuestionPackViewModel createdQuestionPackViewModel = new QuestionPackViewModel(createdQuestionPack);
+
+            mainWindowViewModel.Packs.Add(createdQuestionPackViewModel);
+            mainWindowViewModel.ActivePack = mainWindowViewModel.Packs.LastOrDefault();
+            if (window is Window w)
+            {
+                w.Close();
+            }
+
+            mainWindowViewModel.SaveJsonCommand.Execute(null);
         }
 
-        private bool CanCreateActivePack(object? arg)
-        {
-            return 
-                !string.IsNullOrWhiteSpace(this.PackName)
-                && this.PackName.Length <= 32
-                && this.Difficulty != null 
-                && this.TimeLimitInSeconds != null;
-        }
 
-        private void CreateActivePack(object obj)
-        {
-            QuestionPack questionPack = new QuestionPack(
-                name: this.PackName,
-                Difficulty = this.Difficulty,
-                timeLimitInSeconds: this.TimeLimitInSeconds
-                );
-        }
+        //private bool CanCreateActivePack(object? arg)
+        //{
+        //    return 
+        //        !string.IsNullOrWhiteSpace(this.PackName)
+        //        && this.PackName.Length <= 32
+        //        && this.Difficulty != null 
+        //        && this.TimeLimitInSeconds != null;
+        //}
+
+        //private void CreateActivePack(object obj)
+        //{
+        //    QuestionPack questionPack = new QuestionPack(
+        //        name: this.PackName,
+        //        Difficulty = this.Difficulty,
+        //        timeLimitInSeconds: this.TimeLimitInSeconds
+        //        );
+        //}
 
 
         public bool QuizHasChanged = false;
@@ -103,7 +137,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 QuizHasChanged = true;
 
                 RaisePropertyChanged();
-                CreateActivePackCommand.RaiseCanExecuteChanged();
+                //CreateActivePackCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -118,7 +152,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 QuizHasChanged = true;
 
                 RaisePropertyChanged();
-                CreateActivePackCommand.RaiseCanExecuteChanged();
+                //CreateActivePackCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -133,11 +167,11 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 QuizHasChanged = true;
 
                 RaisePropertyChanged();
-                CreateActivePackCommand.RaiseCanExecuteChanged();
+                //CreateActivePackCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public DelegateCommand CreateActivePackCommand;
+        //public DelegateCommand CreateActivePackCommand;
 
 
         public List<Difficulty> Difficulties { get; }

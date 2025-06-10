@@ -41,8 +41,9 @@
             <ComboBox Width="350"
                       Margin="0 0 10 0"
                       ItemsSource="{Binding Difficulties}"
-                      SelectedIndex="1"
+                      SelectedItem="{Binding Difficulty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       />
+                      <!--SelectedIndex="{Binding Difficulty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
         </StackPanel>
 
         <StackPanel Grid.Row="2">

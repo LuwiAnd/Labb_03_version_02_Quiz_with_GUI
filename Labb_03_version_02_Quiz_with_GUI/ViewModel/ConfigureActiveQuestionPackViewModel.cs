@@ -19,13 +19,15 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             UpdateActivePackCommand = new DelegateCommand(UpdateActivePack, CanUpdateActivePack);
             if (mainWindowViewModel.ActivePack is not null)
             {
-                this.PackName = mainWindowViewModel.ActivePack.Name ?? "Name your quiz";
+                //this.PackName = mainWindowViewModel.ActivePack.Name ?? "Name your quiz";
+                this._packName = mainWindowViewModel.ActivePack.Name ?? "Name your quiz";
                 this.Difficulty = mainWindowViewModel.ActivePack.Difficulty;
                 this.TimeLimitInSeconds = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             }
             else
             {
-                this.PackName = "Name your quiz";
+                //this.PackName = "Name your quiz";
+                this._packName = "Name your quiz";
                 this.Difficulty = Difficulty.Medium;
                 this.TimeLimitInSeconds = 30;
             }
