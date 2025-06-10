@@ -40,8 +40,9 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             timer.Tick += Timer_Tick;
             //timer.Start();
 
+            // Denna DelegateCommand användes till en testknapp tidigare.
             //UpdateButtonCommand = new DelegateCommand(UpdateButton);
-            UpdateButtonCommand = new DelegateCommand(UpdateButton, CanUpdateButton);
+            //UpdateButtonCommand = new DelegateCommand(UpdateButton, CanUpdateButton);
 
 
             AnswerCommand = new DelegateCommand(OnScoringQuestion, CanAnswerQuestion);
@@ -234,16 +235,17 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         //public string TestData { get => "This is test data."; private set; }
         //public string TestData { get; private set; } = "Start value.";
         
-        private string _testData = "Start value.";
-        public string TestData
-        {
-            get => _testData;
-            private set
-            {
-                _testData = value;
-                RaisePropertyChanged();
-            }
-        }
+        // Detta användes för att testa kod tidigare.
+        //private string _testData = "Start value.";
+        //public string TestData
+        //{
+        //    get => _testData;
+        //    private set
+        //    {
+        //        _testData = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
 
         public bool ShowPlayerView
         {
@@ -258,18 +260,30 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
         public DelegateCommand UpdateButtonCommand { get; }
 
-        
 
-        private bool CanUpdateButton(object? arg)
-        {
-            return TestData.Length < 20;
-        }
+        public ObservableCollection<AnswerOption> AnswerOptions { get; }
+        private readonly Random random = new Random();
 
-        private void UpdateButton(object obj)
-        {
-            TestData += 'x';
-            UpdateButtonCommand.RaiseCanExecuteChanged();
-        }
+        private const int TotalTimeToDisplayCorrectAnswerInSeconds = 1;
+        private int TimeLeftToDisplayCorrectAnswerInSeconds = TotalTimeToDisplayCorrectAnswerInSeconds;
+        //private string _selectedAnswer;
+        //private int _correctAnswerIndex;
+
+        public DelegateCommand AnswerCommand { get; }
+
+
+
+        //Nedanstående användes till en testknapp för att testa hur kod fungerar.
+        //private bool CanUpdateButton(object? arg)
+        //{
+        //    return TestData.Length < 20;
+        //}
+        // 
+        //private void UpdateButton(object obj)
+        //{
+        //    TestData += 'x';
+        //    UpdateButtonCommand.RaiseCanExecuteChanged();
+        //}
 
 
         private bool CanStartQuiz(object? arg)
@@ -281,7 +295,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
         {
             if (!mainWindowViewModel.ShowPlayerView) { mainWindowViewModel.ShowPlayerView = true; }
 
-            ResetButtonColors();
+            //ResetButtonColors();
 
             this.QuestionsInRandomOrder = mainWindowViewModel.ActivePack.Questions.OrderBy(_ => random.Next()).ToList();
 
@@ -362,16 +376,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
 
-        // Code for handling button clicks.
-        public ObservableCollection<AnswerOption> AnswerOptions { get; }
-        private readonly Random random = new Random();
-
-        private const int TotalTimeToDisplayCorrectAnswerInSeconds = 1;
-        private int TimeLeftToDisplayCorrectAnswerInSeconds = TotalTimeToDisplayCorrectAnswerInSeconds;
-        //private string _selectedAnswer;
-        //private int _correctAnswerIndex;
         
-        public DelegateCommand AnswerCommand { get; }
+        
 
 
 
@@ -476,8 +482,8 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
 
 
 
-        
-
+        /*
+        // Denna funktion används inte längre.
         private void ResetButtonColors()
         {
             Button1Color = Brushes.LightGray;
@@ -514,7 +520,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             get => _button4Color;
             set { _button4Color = value; RaisePropertyChanged(); }
         }
-
+        */
 
 
 
