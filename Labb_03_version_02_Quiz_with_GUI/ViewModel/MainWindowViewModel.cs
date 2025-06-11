@@ -175,6 +175,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.ShowConfigurationView));
                 ConfigurationViewModel.RemoveQuestionCommand.RaiseCanExecuteChanged();
                 ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
+                OpenActivePackConfigurationCommand.RaiseCanExecuteChanged();
 
             }
         }
