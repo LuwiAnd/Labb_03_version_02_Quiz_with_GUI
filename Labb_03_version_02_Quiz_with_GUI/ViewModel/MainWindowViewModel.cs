@@ -168,6 +168,14 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
                 // Vi behöver troligtvis göra liknande detta på flera ställen när vi gör Labb3!
                 //ConfigurationViewModel.RaisePropertyChanged("Active Pack"); // Luwi 2025-01-09. Så här stod det innan, men jag tror att mellanslaget var ett typo.
                 ConfigurationViewModel.RaisePropertyChanged("ActivePack");
+
+
+                ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.ActivePack));
+                ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.HasActivePack));
+                ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.ShowConfigurationView));
+                ConfigurationViewModel.RemoveQuestionCommand.RaiseCanExecuteChanged();
+                ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
+
             }
         }
 
@@ -290,7 +298,7 @@ namespace Labb_03_version_02_Quiz_with_GUI.ViewModel
             SwitchToPlayerViewCommand = new DelegateCommand(
                 //_ => { ShowConfigurationView = false; ShowPlayerView = true; PlayerViewModel.StartQuizCommand.Execute(null); },
                 _ => { ShowPlayerView = true; PlayerViewModel.StartQuizCommand.Execute(null); },
-                _ => !ShowPlayerView && ActivePack.Questions.Count > 0
+                _ => !ShowPlayerView && (ActivePack?.Questions.Count ?? 0) > 0
             );
 
             OpenActivePackConfigurationCommand = new DelegateCommand(
